@@ -24,7 +24,7 @@ export const Signup = () => {
   };
 
   return (
-    <div className="md:h-dvh  grid grid-cols-1 md:grid-cols-12 font-sans">
+    <div className="min-h-dvh grid grid-cols-1 lg:grid-cols-12 font-sans">
       <div className="md:col-span-6 bg-[#F5F5F5]">
         <div className="flex justify-center items-center h-dvh">
           <div className=" p-6 rounded-lg w-full max-w-xl">
@@ -38,7 +38,7 @@ export const Signup = () => {
               errorMessage="Signup failed. Please try again."
               successMessage="Account created successfully!"
               submitText="Create Account"
-              className="space-y-6"
+              className="space-y-6 w-full"
             >
               <div className="grid sm:grid-cols-2 gap-4">
                 <div className="space-y-2">
@@ -114,7 +114,7 @@ export const Signup = () => {
           </div>
         </div>
       </div>
-      <div className="col-span-6 relative h-full">
+      <div className="hidden lg:block lg:col-span-6 relative h-dvh">
         <div className="relative w-full h-full overflow-hidden bg-gray-100">
           <img
             src={image1} // Main image
