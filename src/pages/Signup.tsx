@@ -2,6 +2,7 @@ import Button from "../components/Button";
 import { Form } from "../components/Form";
 import { useState } from "react";
 import image1 from "/image1.webp";
+
 export const Signup = () => {
   const [formData, setFormData] = useState({
     email: "",
