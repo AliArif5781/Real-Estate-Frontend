@@ -2,20 +2,39 @@ import Button from "../components/Button";
 import { Form } from "../components/Form";
 import { useState } from "react";
 import image1 from "/image1.webp";
+import { signup } from "../services/authControllers";
+import toast from "react-hot-toast";
+import Loader from "../components/Loader";
 
 export const Signup = () => {
+  const [isLoading, setIsloading] = useState<boolean>(false);
   const [formData, setFormData] = useState({
+    firstName: "",
+    lastName: "",
     email: "",
     password: "",
   });
   const [status, setStatus] = useState("idle");
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // setStatus("submitting");
-    // Add your form submission logic here
-    // On success: setStatus("success")
-    // On error: setStatus("error")
+    setIsloading(true);
+    try {
+      await signup(
+        formData.firstName,
+        formData.lastName,
+        formData.email,
+        formData.password
+      );
+      toast.success("Registration successful! Please verify your email.", {
+        duration: 3000,
+      });
+    } catch (error: any) {
+      toast.error(error.message);
+      console.log(error, "Signupform");
+    } finally {
+      setIsloading(false);
+    }
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -34,6 +53,7 @@ export const Signup = () => {
             </h3>
 
             <Form
+              onSubmit={handleSubmit}
               status="idle"
               errorMessage="Signup failed. Please try again."
               successMessage="Account created successfully!"
@@ -53,6 +73,7 @@ export const Signup = () => {
                     id="firstName"
                     name="firstName"
                     className="w-full px-3 py-2 border rounded-md border-none outline-none"
+                    onChange={handleChange}
                     required
                   />
                 </div>
@@ -68,6 +89,7 @@ export const Signup = () => {
                     id="lastName"
                     name="lastName"
                     className="w-full px-3 py-2 border rounded-md border-none outline-none"
+                    onChange={handleChange}
                     required
                   />
                 </div>
@@ -103,12 +125,16 @@ export const Signup = () => {
                 />
               </div>
               <Button
+                className={`w-[8rem] ${
+                  isLoading ? "opacity-50 cursor-not-allowed" : ""
+                }`}
                 type="submit"
                 variant="lightgray"
                 isLoading={status === "submitting"}
                 disabled={status === "submitting"}
               >
                 submitText
+                {/* {isLoading ? <Loader /> : "submitText"} */}
               </Button>
             </Form>
           </div>
