@@ -1,3 +1,4 @@
+import type React from "react";
 import Button from "./Button";
 
 type FormStatus = "idle" | "submitting" | "success" | "error";
@@ -9,6 +10,7 @@ interface FormProps {
   errorMessage: string;
   submitText: string;
   successMessage: string;
+  onSubmit: (e: React.FormEvent) => void;
 }
 export const Form = ({
   children,
@@ -17,10 +19,11 @@ export const Form = ({
   submitText = "submit",
   successMessage = "Success!",
   status = "idle",
+  onSubmit,
 }: FormProps) => {
   return (
     <>
-      <form action="" noValidate>
+      <form action="" noValidate onSubmit={onSubmit}>
         <fieldset
           className={`space-y-4 ${className}`}
           disabled={status === "submitting"}
