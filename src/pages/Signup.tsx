@@ -5,6 +5,7 @@ import image1 from "/image1.webp";
 import { signup } from "../services/authControllers";
 import toast from "react-hot-toast";
 import Loader from "../components/Loader";
+import { Link } from "react-router-dom";
 
 export const Signup = () => {
   const [isLoading, setIsloading] = useState<boolean>(false);
@@ -51,7 +52,6 @@ export const Signup = () => {
             <h3 className="text-4xl font-semibold mb-6">
               <span className="inline-block">Hi there, welcome!</span>
             </h3>
-
             <Form
               onSubmit={handleSubmit}
               status="idle"
@@ -124,6 +124,32 @@ export const Signup = () => {
                   minLength={8}
                 />
               </div>
+              <div className="my-6">
+                {/* Divider with "OR" */}
+                <div className="relative">
+                  <div className="absolute inset-0 flex items-center">
+                    <div className="w-full border-t border-gray-300"></div>
+                  </div>
+                  <div className="relative flex justify-center">
+                    <span className="bg-[#F5F5F5] px-4 text-sm text-gray-400 font-medium">
+                      OR CONTINUE WITH{" "}
+                    </span>
+                  </div>
+                </div>
+
+                {/* Google Login Button */}
+                <div className="flex justify-center mt-6">
+                  <button className="px-5 py-3  max-w-xs flex items-center justify-center gap-3 border border-gray-300 rounded-lg bg-white text-gray-700 font-medium shadow-sm hover:shadow-md transition-all duration-200 hover:bg-gray-50 focus:outline-none">
+                    <img
+                      className="w-5 h-5"
+                      src="https://www.svgrepo.com/show/475656/google-color.svg"
+                      loading="lazy"
+                      alt="Google logo"
+                    />
+                    <span>Continue with Google</span>
+                  </button>
+                </div>
+              </div>
               <Button
                 className={`w-[8rem] ${
                   isLoading ? "opacity-50 cursor-not-allowed" : ""
@@ -133,13 +159,22 @@ export const Signup = () => {
                 isLoading={status === "submitting"}
                 disabled={status === "submitting"}
               >
-                submitText
-                {/* {isLoading ? <Loader /> : "submitText"} */}
+                {isLoading ? <Loader /> : "Signup"}
               </Button>
             </Form>
+            <div className="text-center text-gray-500 mt-5">
+              Already have an account{" "}
+              <Link
+                to={"/login"}
+                className=" font-semibold text-black hover:underline-offset-2"
+              >
+                Login
+              </Link>
+            </div>
           </div>
         </div>
       </div>
+
       <div className="hidden lg:block lg:col-span-6 relative h-dvh">
         <div className="relative w-full h-full overflow-hidden bg-gray-100">
           <img
