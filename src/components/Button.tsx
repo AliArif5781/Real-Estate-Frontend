@@ -52,19 +52,7 @@ const Button: React.FC<ButtonProps> = ({
       className={`${baseClasses} ${variantClass} ${disabledClass} ${className}`}
       {...props}
     >
-      {isLoading ? (
-        <>
-          <span className="animate-spin">🌀</span>{" "}
-          {/* Replace with your spinner */}
-          <span className="sr-only">Loading...</span>
-        </>
-      ) : (
-        <>
-          {icon && iconPosition === "left" && icon}
-          {children}
-          {icon && iconPosition === "right" && icon}
-        </>
-      )}
+      <>{children}</>
     </button>
   );
 };
