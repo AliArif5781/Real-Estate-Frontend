@@ -23,9 +23,28 @@ export const signup = async (
     console.log(response, "response Signup");
     return response.data;
   } catch (error: any) {
-    if (error.response?.data?.message) {
+    if (error.response.data.message) {
       throw new Error(error.response.data.message);
     }
     throw new Error("Registration Failed");
+  }
+};
+
+export const login = async (email: string, password: string) => {
+  try {
+    const response = await api.post(
+      "/login",
+      { email, password },
+      { withCredentials: true }
+    );
+    if (!response.data.success) {
+      throw new Error(response.data.message || "Login Failed");
+    }
+    console.log(response.data, "login response");
+  } catch (error: any) {
+    if (error.response.data.message) {
+      throw new Error(error.response.data.message);
+    }
+    throw new Error("Login Failed");
   }
 };
