@@ -124,8 +124,8 @@ export const Signup = () => {
                   minLength={8}
                 />
               </div>
+
               <div className="my-6">
-                {/* Divider with "OR" */}
                 <div className="relative">
                   <div className="absolute inset-0 flex items-center">
                     <div className="w-full border-t border-gray-300"></div>
