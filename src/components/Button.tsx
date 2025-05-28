@@ -25,7 +25,8 @@ const variantClasses: Record<ButtonVariant, string> = {
   outline:
     "border border-gray-300 bg-white text-gray-700 hover:bg-gray-50 focus:outline-none focus:border-none",
   ghost: "text-gray-700 hover:bg-gray-100 focus:outline-none focus:border-none",
-  lightgray: "bg-[#60463b] text-[#F3F4F1] focus:outline-none focus:border-none",
+  lightgray:
+    "bg-light-brown text-[#F3F4F1] focus:outline-none focus:border-none",
 };
 
 const Button: React.FC<ButtonProps> = ({
