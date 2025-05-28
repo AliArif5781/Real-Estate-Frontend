@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import toast from "react-hot-toast";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Loader from "../components/Loader";
 import Button from "../components/Button";
 import { Form } from "../components/Form";
@@ -8,6 +8,7 @@ import image1 from "/image1.webp";
 import { login } from "../services/authControllers";
 
 const Login = () => {
+  const navigate = useNavigate();
   const [isLoading, setIsloading] = useState<boolean>(false);
   const [formData, setFormData] = useState({
     email: "",
@@ -22,6 +23,7 @@ const Login = () => {
       toast.success("Login successful! Please verify your email.", {
         duration: 3000,
       });
+      navigate("/");
     } catch (error: any) {
       toast.error(error.message);
       console.log(error, "login form");
