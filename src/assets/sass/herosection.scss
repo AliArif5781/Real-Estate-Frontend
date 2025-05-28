@@ -1,0 +1,15 @@
+.stats-card_container {
+  @apply grid grid-cols-12 gap-4 md:gap-6 lg:gap-8;
+}
+
+.stats-card {
+  @apply col-span-12 sm:col-span-6 md:col-span-4 p-4 sm:p-6  rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 text-center;
+}
+
+.stats-card__value {
+  @apply text-3xl sm:text-4xl font-bold mb-2;
+}
+
+.stats-card__label {
+  @apply text-sm sm:text-base text-gray-600 font-medium;
+}
