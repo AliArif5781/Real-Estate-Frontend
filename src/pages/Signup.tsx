@@ -5,9 +5,11 @@ import image1 from "/image1.webp";
 import { signup } from "../services/authControllers";
 import toast from "react-hot-toast";
 import Loader from "../components/Loader";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 export const Signup = () => {
+  const navigate = useNavigate();
+
   const [isLoading, setIsloading] = useState<boolean>(false);
   const [formData, setFormData] = useState({
     firstName: "",
@@ -30,6 +32,7 @@ export const Signup = () => {
       toast.success("Registration successful! Please verify your email.", {
         duration: 3000,
       });
+      navigate("/");
     } catch (error: any) {
       toast.error(error.message);
       console.log(error, "Signupform");
