@@ -8,6 +8,9 @@ export default {
       },
       colors: {
         "light-gray": "#bfc0c0",
+        "light-brown": "#60463b",
+        "light-brown-100": "#7D6B5A",
+        "light-pink": "#FCF6F3",
       },
     },
   },
