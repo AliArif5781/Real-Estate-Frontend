@@ -1,12 +1,13 @@
-import Input from "../components/Input";
 import bgImage from "/bg.png";
 import { Search } from "lucide-react";
+// import Page from "../components/MainPage";
+import PropertyCard from "../components/PropertyCard";
 
 export const MainPage = () => {
   return (
     <div className="min-h-screen grid grid-cols-1 lg:grid-cols-12 max-w-[1200px] mx-auto px-4 sm:px-6">
       {/* Left Content Column */}
-      <div className="lg:col-span-6 flex flex-col justify-center py-8 lg:py-0 gap-6">
+      <div className="lg:col-span-8 flex flex-col justify-center py-8 lg:py-0 gap-6">
         <h3 className="text-2xl sm:text-3xl md:text-4xl text-black">
           Search results for <span className="font-bold">London</span>
         </h3>
@@ -140,11 +141,12 @@ export const MainPage = () => {
               </button>
             </div>
           </div>
+          <PropertyCard />
         </div>
       </div>
 
       {/* Right Image Column */}
-      <div className="lg:col-span-6 flex items-center justify-center p-4 sm:p-8 bg-light-pink mx-2 sm:mx-5">
+      <div className="lg:col-span-4 flex items-center justify-center p-4 sm:p-8 bg-light-pink mx-2 sm:mx-5">
         <div className="rounded-lg overflow-hidden w-full max-w-md">
           <img
             src={bgImage}
