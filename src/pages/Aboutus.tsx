@@ -1,6 +1,7 @@
 import video from "/video.mp4";
 import img from "/image1.webp";
 import { useMemo } from "react";
+
 export const Aboutus = () => {
   const videoElement = useMemo(
     () => (
@@ -34,18 +35,12 @@ export const Aboutus = () => {
             quae itaque eum deleniti ad iusto facere in culpa exercitationem
             odio. Impedit!
           </p>
-          {/* <button className="mt-8 px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white font-medium rounded-lg hover:from-blue-700 hover:to-purple-700 transition-all duration-300 shadow-lg hover:shadow-xl">
-            Learn More
-          </button> */}
         </div>
       </div>
 
-      {/* Image/Visual Content */}
       <div className="lg:col-span-5 order-1 lg:order-2 flex items-center justify-center">
-        <div className="w-full h-64 sm:h-80 md:h-96 lg:h-full  rounded-xl lg:rounded-l-none overflow-hidden flex items-center justify-center">
-          {/* <span className="text-white text-2xl"> */}
+        <div className="w-full h-64 sm:h-80 md:h-[30rem] object-cover  rounded-xl overflow-hidden flex items-center justify-center">
           {videoElement}
-          {/* </span> */}
         </div>
       </div>
     </div>
