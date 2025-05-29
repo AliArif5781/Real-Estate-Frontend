@@ -6,6 +6,7 @@ import HeroSection from "../pages/HeroSection";
 import { Aboutus } from "../pages/Aboutus";
 import NotFoundPage from "../pages/404Page";
 import { UserProfile } from "../pages/UserProfile";
+import { MainPage } from "../pages/MainPage";
 
 export const router = createBrowserRouter([
   {
@@ -19,6 +20,10 @@ export const router = createBrowserRouter([
       {
         path: "about",
         element: <Aboutus />,
+      },
+      {
+        path: "mainPage",
+        element: <MainPage />,
       },
     ],
   },
