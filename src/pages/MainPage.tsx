@@ -146,12 +146,12 @@ export const MainPage = () => {
       </div>
 
       {/* Right Image Column */}
-      <div className="lg:col-span-4 flex items-center justify-center p-4 sm:p-8 bg-light-pink mx-2 sm:mx-5">
+      <div className="lg:col-span-4 flex items-center justify-center p-4 sm:p-8 lg:bg-light-pink mx-2 sm:mx-5">
         <div className="rounded-lg overflow-hidden w-full max-w-md">
           <img
             src={bgImage}
             alt="Modern luxury apartment with spacious living area and natural light"
-            className="w-full h-auto object-cover"
+            className="hidden lg:flex w-full h-auto object-cover"
             loading="lazy"
             width={600}
             height={400}
