@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Bath, BedDouble, Bookmark, MapPin } from "lucide-react";
 
 // Define what a property looks like
 export interface Property {
@@ -31,32 +32,42 @@ const PropertyCard: React.FC<PropertyCardProps> = ({ property }) => {
 
   const displayProperty = property || dummyProperty;
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-12 gap-4 my-5">
-      {/* Image Section - Full width on mobile, 4 columns on sm+ */}
+    <div className="grid grid-cols-1 sm:grid-cols-12 gap-4 my-10">
       <div className="sm:col-span-5 bg-gray-200 rounded-lg overflow-hidden">
         <img
           src={displayProperty.imageUrl}
           alt="propertyImage"
-          className="w-full h-full sm:h-full object-cover"
+          className="w-full h-48 sm:h-full object-cover"
+          loading="lazy"
         />
       </div>
 
-      {/* Details Section - Full width on mobile, 8 columns on sm+ */}
-      <div className="sm:col-span-7 bg-gray-100 px-4 rounded-lg">
-        <h3 className="text-xl font-medium">{displayProperty.title}</h3>
-        <p className="text-gray-500 text-base my-2">
-          {displayProperty.address}, {displayProperty.location}
-        </p>
-        <span className="text-lg font-semibold  bg-amber-300 p-1 rounded-md my-2">
-          ${displayProperty.price.toLocaleString()}
-        </span>
-        <div className="flex gap-4 mt-3 bg-red-300">
-          <span className="bg-gray-200 px-3 py-1 rounded-full text-sm">
-            {displayProperty.bedrooms} beds
+      <div className="sm:col-span-7 bg-gray-100 px-4 rounded-lg flex flex-col h-full">
+        <div className="flex-grow">
+          {" "}
+          <h3 className="text-xl font-medium">{displayProperty.title}</h3>
+          <p className="flex text-gray-500 text-base my-2">
+            <MapPin className="h-5 mt-[0.5px]" /> {displayProperty.address},{" "}
+            {displayProperty.location}
+          </p>
+          <span className="text-lg font-semibold bg-amber-300 p-1 rounded-md my-2 inline-block">
+            ${displayProperty.price.toLocaleString()}
           </span>
-          <span className="bg-gray-200 px-3 py-1 rounded-full text-sm">
-            {displayProperty.bathrooms} baths
-          </span>
+        </div>
+
+        <div className="flex justify-between items-center py-3">
+          <div className="flex items-center gap-4">
+            <span className="inline-flex items-center bg-amber-300 px-3 py-1 rounded-full text-[16px] font-medium gap-1">
+              <BedDouble className="h-6" /> {displayProperty.bedrooms} bedroom
+            </span>
+            <span className="inline-flex items-center bg-amber-300 px-3 py-1 rounded-full text-[16px] font-medium gap-1">
+              <Bath className="h-6" /> {displayProperty.bathrooms} bathroom
+            </span>
+          </div>
+
+          <button className="text-gray-500 transition-colors">
+            <Bookmark className="h-5 w-5" />{" "}
+          </button>
         </div>
       </div>
     </div>
