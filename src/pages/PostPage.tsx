@@ -2,59 +2,51 @@ import { useState, useRef } from "react";
 import type { ChangeEvent } from "react";
 
 interface FormData {
+  location: string;
   title: string;
-  price: string;
+  price: number;
   address: string;
   description: string;
   city: string;
-  bedroomNumber: string;
-  bathroomNumber: string;
-  latitude: string;
-  longitude: string;
+  bedroomNumber: number;
+  bathroomNumber: number;
+  latitude: number;
+  longitude: number;
   type: string;
   property: string;
   utilitiesPolicy: string;
   petPolicy: string;
   incomePolicy: string;
-  totalSize: string;
+  totalSize: number;
   school: string;
   images: File[];
   previewImages: string[];
-  location: string;
 }
 
 const PostPage = () => {
   const [formData, setFormData] = useState<FormData>({
     location: "",
     title: "",
-    price: "",
+    price: 0,
     address: "",
     description: "",
     city: "",
-    bedroomNumber: "",
-    bathroomNumber: "",
-    latitude: "",
-    longitude: "",
+    bedroomNumber: 0,
+    bathroomNumber: 0,
+    latitude: 0,
+    longitude: 0,
     type: "Rent",
     property: "Apartment",
     utilitiesPolicy: "Owner is responsible",
     petPolicy: "Allowed",
     incomePolicy: "",
-    totalSize: "",
+    totalSize: 0,
     school: "",
     images: [],
     previewImages: [],
   });
 
   const fileInputRef = useRef<HTMLInputElement>(null);
-
-  //   const editor = useEditor({
-  //     extensions: [StarterKit],
-  //     content: formData.description,
-  //     onUpdate: ({ editor }) => {
-  //       setFormData({ ...formData, description: editor.getHTML() });
-  //     },
-  //   });
 
   const handleInputChange = (
     e: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
@@ -137,7 +129,7 @@ const PostPage = () => {
       };
 
       // Send to your backend
-      const response = await fetch("http://localhost:3000/api/posts", {
+      const response = await fetch("http://localhost:3000/api/post", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -151,8 +143,11 @@ const PostPage = () => {
       } else {
         throw new Error("Failed to create post");
       }
-    } catch (error) {
-      console.error("Error:", error);
+      console.log(formData);
+      console.log("Sending to backend:", JSON.stringify(postData, null, 2)); ///
+    } catch (error: any) {
+      console.error("Full error:", error);
+      console.error("Error response:", await error.response?.text());
       alert("Error creating post. Please try again.");
     }
   };
@@ -211,7 +206,7 @@ const PostPage = () => {
               Price
             </label>
             <input
-              type="text"
+              type="number"
               id="price"
               name="price"
               value={formData.price}
@@ -246,42 +241,12 @@ const PostPage = () => {
             Description
           </label>
           <textarea
-            name=""
-            id=""
+            name="description"
+            id="description"
+            value={formData.description}
+            onChange={handleInputChange}
             className="border outline-none rounded-lg p-2 min-h-40 w-full resize-none"
           ></textarea>
-          {/* <div className="border border-gray-300 rounded-lg p-2 min-h-40">
-            <div className="flex space-x-2 mb-2">
-              <button
-                type="button"
-                onClick={() => editor?.chain().focus().toggleBold().run()}
-                className={`px-2 py-1 rounded ${
-                  editor?.isActive("bold") ? "bg-gray-200" : ""
-                }`}
-              >
-                B
-              </button>
-              <button
-                type="button"
-                onClick={() => editor?.chain().focus().toggleItalic().run()}
-                className={`px-2 py-1 rounded ${
-                  editor?.isActive("italic") ? "bg-gray-200" : ""
-                }`}
-              >
-                I
-              </button>
-              <button
-                type="button"
-                onClick={() => editor?.chain().focus().run()}
-                className={`px-2 py-1 rounded ${
-                  editor?.isActive("underline") ? "bg-gray-200" : ""
-                }`}
-              >
-                U
-              </button>
-            </div>
-            <EditorContent editor={editor} className="min-h-32 p-2" />
-          </div> */}
         </div>
 
         {/* Second Row - City, Bedrooms, Bathrooms */}
@@ -317,7 +282,7 @@ const PostPage = () => {
               name="bedroomNumber"
               value={formData.bedroomNumber}
               onChange={handleInputChange}
-              className="w-full px-3 py-2 md:px-4 md:py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
+              className="w-full px-3 py-2 md:px-4 md:py-3 border outline-none rounded-lg"
               placeholder="Number of bedrooms"
             />
           </div>
@@ -335,7 +300,7 @@ const PostPage = () => {
               name="bathroomNumber"
               value={formData.bathroomNumber}
               onChange={handleInputChange}
-              className="w-full px-3 py-2 md:px-4 md:py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
+              className="w-full px-3 py-2 md:px-4 md:py-3 border outline-none rounded-lg"
               placeholder="Number of bathrooms"
             />
           </div>
