@@ -1,50 +1,25 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useMemo } from "react";
 import type { ChangeEvent } from "react";
+import { Loader } from "../components/Loader";
+import toast from "react-hot-toast";
+import { useAppDispatch, useAppSelector } from "../app/hook";
+import {
+  removeImage,
+  resetForm,
+  setImages,
+  updateField,
+} from "../features/property/postSlice";
+import { searchApiPost } from "../api/api";
 
-interface FormData {
-  location: string;
-  title: string;
-  price: number;
-  address: string;
-  description: string;
-  city: string;
-  bedroomNumber: number;
-  bathroomNumber: number;
-  latitude: number;
-  longitude: number;
-  type: string;
-  property: string;
-  utilitiesPolicy: string;
-  petPolicy: string;
-  incomePolicy: string;
-  totalSize: number;
-  school: string;
-  images: File[];
-  previewImages: string[];
-}
+export const PostPage = () => {
+  const dispatch = useAppDispatch();
+  const formData = useAppSelector((state) => state.post);
+  const [loading, setLoading] = useState(false);
 
-const PostPage = () => {
-  const [formData, setFormData] = useState<FormData>({
-    location: "",
-    title: "",
-    price: 0,
-    address: "",
-    description: "",
-    city: "",
-    bedroomNumber: 0,
-    bathroomNumber: 0,
-    latitude: 0,
-    longitude: 0,
-    type: "Rent",
-    property: "Apartment",
-    utilitiesPolicy: "Owner is responsible",
-    petPolicy: "Allowed",
-    incomePolicy: "",
-    totalSize: 0,
-    school: "",
-    images: [],
-    previewImages: [],
-  });
+  const imagePreviews = useMemo(
+    () => formData.previewImages,
+    [formData.previewImages]
+  );
 
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -52,65 +27,70 @@ const PostPage = () => {
     e: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
   ) => {
     const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
+    dispatch(updateField({ field: name as keyof typeof formData, value }));
   };
 
-  const handleImageUpload = (e: ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files) {
-      const files = Array.from(e.target.files);
-      const previews = files.map((file) => URL.createObjectURL(file));
+  const handleImageUpload = async (e: ChangeEvent<HTMLInputElement>) => {
+    if (!e.target.files) return;
 
-      setFormData((prev) => ({
-        ...prev,
-        images: [...prev.images, ...files],
-        previewImages: [...prev.previewImages, ...previews],
-      }));
-    }
+    const files = Array.from(e.target.files);
+
+    // 1. Create previews (Base64)
+    const previews = await Promise.all(
+      files.map(
+        (file) =>
+          new Promise<string>((resolve) => {
+            const reader = new FileReader();
+            reader.onload = () => resolve(reader.result as string);
+            reader.readAsDataURL(file);
+          })
+      )
+    );
+
+    // 2. Upload to Cloudinary and get URLs
+    const uploadResults = await Promise.all(
+      files.map((file) => uploadToCloudinary(file))
+    );
+    const urls = uploadResults.map((res) => res.secure_url);
+
+    // 3. Save URLs to Redux
+    dispatch(setImages({ urls, previews }));
   };
 
-  const removeImage = (index: number) => {
-    const newImages = [...formData.images];
-    const newPreviews = [...formData.previewImages];
-
-    newImages.splice(index, 1);
-    newPreviews.splice(index, 1);
-
-    setFormData({
-      ...formData,
-      images: newImages,
-      previewImages: newPreviews,
-    });
+  const handleRemoveImage = (index: number) => {
+    dispatch(removeImage(index));
   };
+
+  // Memoized Cloudinary upload function
+  const uploadToCloudinary = useMemo(
+    () => async (file: File) => {
+      const formData = new FormData();
+      formData.append("file", file);
+      formData.append("upload_preset", "SocietyManagementSystem");
+
+      const res = await fetch(
+        "https://api.cloudinary.com/v1_1/dwubwj9in/image/upload",
+        { method: "POST", body: formData }
+      );
+      return res.json();
+    },
+    []
+  );
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setLoading(true);
 
     try {
-      // Upload images to Cloudinary first
-      const cloudinaryUrls = await Promise.all(
-        formData.images.map(async (file) => {
-          const formData = new FormData();
-          formData.append("file", file);
-          formData.append("upload_preset", "SocietyManagementSystem"); // Replace with your upload preset
+      // 1. Verify we have all required data
+      if (!formData.images.length) {
+        throw new Error("Please upload at least one image");
+      }
 
-          const response = await fetch(
-            "https://api.cloudinary.com/v1_1/dwubwj9in/image/upload",
-            {
-              method: "POST",
-              body: formData,
-            }
-          );
-
-          const data = await response.json();
-          return data.secure_url;
-        })
-      );
-
-      // Prepare the final data to send to your backend
+      // 2. Prepare the post data - images are already URLs at this point
       const postData = {
-        location: formData.location,
         title: formData.title,
-        price: formData.price,
+        price: Number(formData.price),
         address: formData.address,
         description: formData.description,
         city: formData.city,
@@ -122,33 +102,52 @@ const PostPage = () => {
         property: formData.property,
         utilitiesPolicy: formData.utilitiesPolicy,
         petPolicy: formData.petPolicy,
-        incomePolicy: formData.incomePolicy,
+        Kitchen: formData.Kitchen,
         totalSize: formData.totalSize,
         school: formData.school,
-        images: cloudinaryUrls,
+        images: formData.images, // Already contains Cloudinary URLs
+        // previewImages: formData.previewImages, // If needed by backend
+        BusStop: formData.BusStop,
+        Resturant: formData.Resturant,
+        LoadShedding: formData.LoadShedding,
+        Water: formData.Water,
+        Gas: formData.Gas,
       };
 
-      // Send to your backend
-      const response = await fetch("http://localhost:3000/api/post", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(postData),
-      });
+      // 3. Send to backend
+      const response = await searchApiPost.post("/api/post", postData);
 
-      if (response.ok) {
-        alert("Post created successfully!");
-        // Reset form or redirect
-      } else {
-        throw new Error("Failed to create post");
+      if (response.status !== 200 && response.status !== 201) {
+        throw new Error(response.data.message || "Failed to create post");
       }
-      console.log(formData);
-      console.log("Sending to backend:", JSON.stringify(postData, null, 2)); ///
+
+      // 4. Show success and reset form
+      toast.success("Post created successfully!");
+      dispatch(resetForm());
+
+      // Optional: Clear any temporary preview URLs
+      formData.previewImages.forEach((preview) => {
+        if (preview.startsWith("blob:")) {
+          URL.revokeObjectURL(preview);
+        }
+      });
     } catch (error: any) {
-      console.error("Full error:", error);
-      console.error("Error response:", await error.response?.text());
-      alert("Error creating post. Please try again.");
+      console.error("Submission error:", error);
+
+      // Enhanced error handling
+      const errorMessage =
+        error.response?.data?.message ||
+        error.message ||
+        "Failed to create post";
+      toast.error(errorMessage);
+
+      // Optional: Rollback image uploads if post fails
+      if (formData.images.length) {
+        // You might want to add logic to delete uploaded images from Cloudinary
+        // if the post creation fails
+      }
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -159,25 +158,6 @@ const PostPage = () => {
         <h1 className="text-2xl md:text-4xl font-bold text-gray-900">
           Add New Post
         </h1>
-        <div className="grid grid-cols-12 gap-4">
-          <label
-            htmlFor="location"
-            className="col-span-12 text-2xl md:text-3xl font-semibold text-gray-800"
-          >
-            Location
-          </label>
-          <div className="col-span-12">
-            <input
-              type="text"
-              id="location"
-              name="location"
-              value={formData.location}
-              onChange={handleInputChange}
-              placeholder="Enter Location"
-              className="w-full px-3 py-2 md:px-4 md:py-3 border outline-none rounded-lg"
-            />
-          </div>
-        </div>
         {/* Top Row - Title, Price, Address */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
           <div className="space-y-2">
@@ -441,19 +421,19 @@ const PostPage = () => {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
           <div className="space-y-2">
             <label
-              htmlFor="incomePolicy"
+              htmlFor="Kitchen"
               className="block text-sm font-medium text-gray-700"
             >
-              Income Policy
+              Kitchen
             </label>
             <input
-              type="text"
-              id="incomePolicy"
-              name="incomePolicy"
-              value={formData.incomePolicy}
+              type="number"
+              id="Kitchen"
+              name="Kitchen"
+              value={formData.Kitchen}
               onChange={handleInputChange}
               className="w-full px-3 py-2 md:px-4 md:py-3 border outline-none rounded-lg"
-              placeholder="Enter income requirements"
+              placeholder="Enter Kitchen"
             />
           </div>
 
@@ -483,13 +463,107 @@ const PostPage = () => {
               School
             </label>
             <input
-              type="text"
+              type="number"
               id="school"
               name="school"
               value={formData.school}
               onChange={handleInputChange}
               className="w-full px-3 py-2 md:px-4 md:py-3 border outline-none rounded-lg"
-              placeholder="Nearby school district"
+              placeholder="Nearby school in meter"
+            />
+          </div>
+        </div>
+
+        {/* Six */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
+          <div className="space-y-2">
+            <label
+              htmlFor="BusStop"
+              className="block text-sm font-medium text-gray-700"
+            >
+              BusStop
+            </label>
+            <input
+              type="number"
+              id="BusStop"
+              name="BusStop"
+              value={formData.BusStop}
+              onChange={handleInputChange}
+              className="w-full px-3 py-2 md:px-4 md:py-3 border outline-none rounded-lg"
+              placeholder="BusStop in meter"
+            />
+          </div>
+
+          <div className="space-y-2">
+            <label
+              htmlFor="Resturant"
+              className="block text-sm font-medium text-gray-700"
+            >
+              Resturant
+            </label>
+            <input
+              type="number"
+              id="Resturant"
+              name="Resturant"
+              value={formData.Resturant}
+              onChange={handleInputChange}
+              className="w-full px-3 py-2 md:px-4 md:py-3 border outline-none rounded-lg"
+              placeholder="Resturant in meter"
+            />
+          </div>
+          <div className="space-y-2">
+            <label
+              htmlFor="LoadShedding"
+              className="block text-sm font-medium text-gray-700"
+            >
+              Load Shedding
+            </label>
+            <input
+              type="text"
+              id="LoadShedding"
+              name="LoadShedding"
+              value={formData.LoadShedding}
+              onChange={handleInputChange}
+              className="w-full px-3 py-2 md:px-4 md:py-3 border outline-none rounded-lg"
+              placeholder="Load Shedding Schedule"
+            />
+          </div>
+        </div>
+
+        {/* Seven */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
+          <div className="space-y-2">
+            <label
+              htmlFor="Water"
+              className="block text-sm font-medium text-gray-700"
+            >
+              Water Shortage
+            </label>
+            <input
+              type="text"
+              id="Water"
+              name="Water"
+              value={formData.Water}
+              onChange={handleInputChange}
+              className="w-full px-3 py-2 md:px-4 md:py-3 border outline-none rounded-lg"
+              placeholder="Water Schedule"
+            />
+          </div>
+          <div className="space-y-2">
+            <label
+              htmlFor="Gas"
+              className="block text-sm font-medium text-gray-700"
+            >
+              Gas Shortage
+            </label>
+            <input
+              type="text"
+              id="Gas"
+              name="Gas"
+              value={formData.Gas}
+              onChange={handleInputChange}
+              className="w-full px-3 py-2 md:px-4 md:py-3 border outline-none rounded-lg"
+              placeholder="Gas Schedule"
             />
           </div>
         </div>
@@ -499,9 +573,12 @@ const PostPage = () => {
           <button
             type="button"
             onClick={handleSubmit}
-            className="px-6 py-2 md:px-8 md:py-3 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors"
+            disabled={loading}
+            className={`px-6 py-2 md:px-8 md:py-3 bg-black text-white font-medium rounded-lg focus:ring-2 focus:ring-black/20 focus:ring-offset-2 transition-colors ${
+              loading ? "opacity-70 cursor-not-allowed" : "hover:bg-black/80"
+            }`}
           >
-            Create Post
+            {loading ? <Loader /> : "Create Post"}
           </button>
         </div>
       </div>
@@ -548,9 +625,9 @@ const PostPage = () => {
           </div>
 
           {/* Image Previews */}
-          {formData.previewImages.length > 0 && (
+          {imagePreviews.length > 0 && (
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 mt-4">
-              {formData.previewImages.map((preview, index) => (
+              {imagePreviews.map((preview, index) => (
                 <div key={index} className="relative group">
                   <img
                     src={preview}
@@ -559,7 +636,7 @@ const PostPage = () => {
                   />
                   <button
                     type="button"
-                    onClick={() => removeImage(index)}
+                    onClick={() => handleRemoveImage(index)}
                     className="absolute top-1 right-1 bg-red-500 text-white rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity"
                   >
                     <svg
@@ -596,5 +673,3 @@ const PostPage = () => {
     </div>
   );
 };
-
-export default PostPage;
