@@ -1,7 +1,76 @@
-import Input from "../components/Input";
+import { Input } from "../components/Input";
 import { Search } from "lucide-react";
 import bgImage from "/bg.png";
-const HeroSection = () => {
+import { useEffect, useState } from "react";
+import { searchProperties } from "../features/property/PropertySlice";
+import { useAppDispatch, useAppSelector } from "../app/hook";
+import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
+import { getUserData } from "../features/property/UserData";
+
+export const HeroSection = () => {
+  const [city, setCity] = useState<string>("");
+  const [minPrice, setMinPrice] = useState<number | undefined>(undefined);
+  const [maxPrice, setMaxPrice] = useState<number | undefined>(undefined);
+  const [errors, setErrors] = useState({
+    city: "",
+    minPrice: "",
+    maxPrice: "",
+    general: "",
+  });
+
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+  const validateInputs = () => {
+    let isValid = true;
+    const newErrors = {
+      city: "",
+      minPrice: "",
+      maxPrice: "",
+      general: "",
+    };
+
+    // Check if all fields are empty
+    if (!city && !minPrice && !maxPrice) {
+      newErrors.general = "Please fill at least one search field";
+      isValid = false;
+    }
+
+    // Validate price range if both are provided
+    if (minPrice && maxPrice && minPrice > maxPrice) {
+      newErrors.minPrice = "Min price cannot be greater than max price";
+      newErrors.maxPrice = "Max price cannot be less than min price";
+      isValid = false;
+    }
+
+    setErrors(newErrors);
+    return isValid;
+  };
+
+  const handleSearch = async () => {
+    setErrors({
+      city: "",
+      minPrice: "",
+      maxPrice: "",
+      general: "",
+    });
+
+    if (!validateInputs()) {
+      return; // Stop if validation fails
+    }
+
+    try {
+      await dispatch(searchProperties({ city, minPrice, maxPrice }));
+      // console.log(data, "data");
+      navigate("/mainPage", {
+        state: {
+          searchParams: { city, minPrice, maxPrice },
+        },
+      });
+    } catch (error: any) {
+      toast.error(error.message || "Search Failed");
+    }
+  };
   return (
     <div className="min-h-screen grid grid-cols-1 lg:grid-cols-12 max-w-[1200px] mx-auto px-4 sm:px-6">
       {/* Left Content Column */}
@@ -37,30 +106,70 @@ const HeroSection = () => {
                   <Input
                     type="text"
                     placeholder="City"
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#60463b]"
+                    className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 ${
+                      errors.city || errors.general
+                        ? "border-red-500 focus:ring-red-300"
+                        : "border-gray-300 focus:ring-[#60463b]"
+                    }`}
+                    value={city}
+                    onChange={(e) => setCity(e.target.value)}
                   />
                 </div>
                 <div>
                   <Input
                     type="number"
                     placeholder="Min price"
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#60463b]"
+                    className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 ${
+                      errors.minPrice || errors.general
+                        ? "border-red-500 focus:ring-red-300"
+                        : "border-gray-300 focus:ring-[#60463b]"
+                    }`}
+                    value={minPrice || ""}
+                    onChange={(e) =>
+                      setMinPrice(
+                        e.target.value ? Number(e.target.value) : undefined
+                      )
+                    }
                   />
                 </div>
                 <div>
                   <Input
                     type="number"
                     placeholder="Max price"
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#60463b]"
+                    className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 ${
+                      errors.maxPrice || errors.general
+                        ? "border-red-500 focus:ring-red-300"
+                        : "border-gray-300 focus:ring-[#60463b]"
+                    }`}
+                    value={maxPrice || ""}
+                    onChange={(e) =>
+                      setMaxPrice(
+                        e.target.value ? Number(e.target.value) : undefined
+                      )
+                    }
                   />
                 </div>
                 <button
                   className="bg-light-brown hover:bg-light-brown-100 p-2 sm:p-3 rounded-md text-white flex items-center justify-center transition-colors"
                   aria-label="Search properties"
+                  onClick={handleSearch}
                 >
                   <Search size={18} />
                 </button>
               </div>
+              {/* Error messages */}
+              {errors.city && (
+                <p className="mt-1 text-sm text-red-600">{errors.city}</p>
+              )}
+              {errors.minPrice && (
+                <p className="mt-1 text-sm text-red-600">{errors.minPrice}</p>
+              )}
+              {errors.maxPrice && (
+                <p className="mt-1 text-sm text-red-600">{errors.maxPrice}</p>
+              )}
+              {errors.general && (
+                <p className="mt-1 text-sm text-red-600">{errors.general}</p>
+              )}
             </div>
           </div>
           <div className="stats-card_container">
@@ -98,5 +207,3 @@ const HeroSection = () => {
     </div>
   );
 };
-
-export default HeroSection;
