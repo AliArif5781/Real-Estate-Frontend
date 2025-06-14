@@ -1,24 +1,30 @@
 import { useState, useEffect, useRef } from "react";
-import { Link, NavLink } from "react-router-dom";
+import { data, Link, NavLink, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 // import { User } from "lucide-react";
 import userLogo from "/userLogo.png";
-import { getUserData } from "../services/userControllers";
+import { getUserData } from "../features/property/UserData";
 import toast from "react-hot-toast";
+import { useAppDispatch, useAppSelector } from "../app/hook";
+import { unwrapResult } from "@reduxjs/toolkit";
+import { logoutUser } from "../features/property/LogoutUser/logoutUser";
 // import { Skeleton } from "@/components/ui/skeleton"; // Replace with your skeleton component
 
 export const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isUserDropdownOpen, setIsUserDropdownOpen] = useState(false);
-  const [hasLoadedUserData, setHasLoadedUserData] = useState(false); //
-  const [userData, setUserData] = useState<{
-    firstName: string;
-    lastName: string;
-    email: string;
-    avatar?: string;
-  } | null>(null);
-  const [isLoadingUser, setIsLoadingUser] = useState(false);
+  const [isUserDropdownOpen, setIsUserDropdownOpen] = useState<boolean>(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+
+  // Redux hooks
+
+  const {
+    data: userData,
+    loading,
+    error,
+  } = useAppSelector((state) => state.userData);
+  // console.log(userData, "userData Header");
 
   // Mobile menu animation variants
   const mobileMenuVariants = {
@@ -71,27 +77,39 @@ export const Header = () => {
     };
   }, [isUserDropdownOpen]);
 
+  // Header.tsx
   const handleUserClick = async () => {
-    setIsUserDropdownOpen(!isUserDropdownOpen);
-    if (!isUserDropdownOpen && !hasLoadedUserData) {
-      try {
-        setIsLoadingUser(true);
-        const data = await getUserData();
-        setUserData({
-          firstName: data.userData.firstName || "User",
-          lastName: data.userData.lastName || "User",
-          email: data.userData.email,
-          avatar: data.userData.avatar,
-        });
-        setHasLoadedUserData(true);
-      } catch (error: any) {
-        toast.error(error.message);
-        console.error("Error fetching user data:", error);
-      } finally {
-        setIsLoadingUser(false);
-      }
+    setIsUserDropdownOpen(true);
+
+    // if (willOpen && !userData && !loading) {
+    //   try {
+    //     const resultAction = await dispatch(getUserData() as any);
+    //     const userData = unwrapResult(resultAction);
+    //     console.log("User data loaded:", userData);
+    //   } catch (error) {
+    //     console.error("Error loading user data:", error);
+    //     toast.error(
+    //       typeof error === "string"
+    //         ? error
+    //         : error instanceof Error
+    //         ? error.message
+    //         : "Failed to load user data"
+    //     );
+    //   }
+    // }
+  };
+
+  const handleLogout = async () => {
+    try {
+      dispatch(logoutUser()).unwrap();
+      setIsUserDropdownOpen(false);
+      toast.success("user logout successfully", {
+        duration: 2000,
+      });
+      navigate("/login");
+    } catch (error: any) {
+      toast.error("Logout failed:", error);
     }
-    setIsUserDropdownOpen(!isUserDropdownOpen);
   };
 
   return (
@@ -232,7 +250,7 @@ export const Header = () => {
                     transition={{ duration: 0.2 }}
                   >
                     <div className="px-4 py-3 border-b border-gray-100">
-                      {isLoadingUser || !userData ? (
+                      {loading || !userData ? (
                         <>
                           <div className="animate-pulse space-y-2">
                             <div className="h-4 bg-gray-200 rounded w-3/4"></div>
@@ -242,16 +260,16 @@ export const Header = () => {
                       ) : (
                         <>
                           <p className="text-sm font-medium text-gray-900">
-                            {userData.firstName}
+                            {userData?.firstName}
                           </p>
                           <p className="text-sm text-gray-500 truncate">
-                            {userData.email}
+                            {userData?.email}
                           </p>
                         </>
                       )}
                     </div>
                     <div className="py-1">
-                      {isLoadingUser ? (
+                      {loading ? (
                         <>
                           <div className="animate-pulse space-y-1">
                             <div className="h-8 bg-gray-200 rounded mx-2"></div>
@@ -275,7 +293,10 @@ export const Header = () => {
                           >
                             Settings
                           </NavLink>
-                          <button className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                          <button
+                            className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                            onClick={handleLogout}
+                          >
                             Sign out
                           </button>
                         </>
