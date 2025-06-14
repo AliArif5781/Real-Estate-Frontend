@@ -1,10 +1,10 @@
-import Button from "../components/Button";
+import { Button } from "../components/Button";
 import { Form } from "../components/Form";
 import { useState } from "react";
 import image1 from "/image1.webp";
 import { signup } from "../services/authControllers";
 import toast from "react-hot-toast";
-import Loader from "../components/Loader";
+import { Loader } from "../components/Loader";
 import { Link, useNavigate } from "react-router-dom";
 
 export const Signup = () => {
@@ -60,7 +60,7 @@ export const Signup = () => {
               status="idle"
               errorMessage="Signup failed. Please try again."
               successMessage="Account created successfully!"
-              submitText="Create Account"
+              // submitText="Create Account"
               className="space-y-6 w-full"
             >
               <div className="grid sm:grid-cols-2 gap-4">
@@ -124,11 +124,10 @@ export const Signup = () => {
                   onChange={handleChange}
                   className="w-full px-3 py-2 border rounded-md border-none outline-none"
                   required
-                  minLength={8}
                 />
               </div>
 
-              <div className="my-6">
+              {/* <div className="my-6">
                 <div className="relative">
                   <div className="absolute inset-0 flex items-center">
                     <div className="w-full border-t border-gray-300"></div>
@@ -140,7 +139,7 @@ export const Signup = () => {
                   </div>
                 </div>
 
-                {/* Google Login Button */}
+                Google Login Button
                 <div className="flex justify-center mt-6">
                   <button className="px-5 py-3  max-w-xs flex items-center justify-center gap-3 border border-gray-300 rounded-lg bg-white text-gray-700 font-medium shadow-sm hover:shadow-md transition-all duration-200 hover:bg-gray-50 focus:outline-none">
                     <img
@@ -152,7 +151,7 @@ export const Signup = () => {
                     <span>Continue with Google</span>
                   </button>
                 </div>
-              </div>
+              </div> */}
               <Button
                 className={`w-[8rem] ${
                   isLoading ? "opacity-50 cursor-not-allowed" : ""
