@@ -29,7 +29,7 @@ const variantClasses: Record<ButtonVariant, string> = {
     "bg-light-brown text-[#F3F4F1] focus:outline-none focus:border-none",
 };
 
-const Button: React.FC<ButtonProps> = ({
+export const Button: React.FC<ButtonProps> = ({
   variant = "primary",
   type = "button",
   isLoading = false,
@@ -57,5 +57,3 @@ const Button: React.FC<ButtonProps> = ({
     </button>
   );
 };
-
-export default Button;
