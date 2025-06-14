@@ -1,21 +1,22 @@
 import { createBrowserRouter } from "react-router-dom";
-import Layout from "../Layout";
+import { Layout } from "../Layout";
 import { Signup } from "../pages/Signup";
-import Login from "../pages/Login";
-import HeroSection from "../pages/HeroSection";
+import { Login } from "../pages/Login";
+import { HeroSection } from "../pages/HeroSection";
 import { Aboutus } from "../pages/Aboutus";
-import NotFoundPage from "../pages/404Page";
+import { PageNotFound } from "../pages/PageNotFound";
 import { UserProfile } from "../pages/UserProfile";
 import { MainPage } from "../pages/MainPage";
-import PostPage from "../pages/PostPage";
-
+import { PostPage } from "../pages/PostPage";
+import { PropertyPageList } from "../pages/PropertyPageList";
+// import { UProtectedRoute } from "../components/ProtectedRoute";
 export const router = createBrowserRouter([
   {
     path: "",
     element: <Layout />,
     children: [
       {
-        path: "",
+        path: "/",
         element: <HeroSection />,
       },
       {
@@ -30,10 +31,15 @@ export const router = createBrowserRouter([
         path: "postPage",
         element: <PostPage />,
       },
+      {
+        path: "/property/:id",
+        // path: "/propertyPageList",
+        element: <PropertyPageList />,
+      },
     ],
   },
   {
-    path: "/signup",
+    path: "signup",
     element: <Signup />,
   },
   {
@@ -42,7 +48,7 @@ export const router = createBrowserRouter([
   },
   {
     path: "*",
-    element: <NotFoundPage />,
+    element: <PageNotFound />,
   },
   {
     path: "/userProfile",
