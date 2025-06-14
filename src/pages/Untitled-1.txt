@@ -1,0 +1,96 @@
+import { useEffect } from "react";
+import { useParams, useNavigate } from "react-router-dom";
+import { useAppDispatch, useAppSelector } from "../app/hook";
+import {
+  fetchPropertyDetails,
+  clearCurrentProperty,
+} from "../features/property/SearchPropertySlice";
+import { Loader } from "../components/Loader";
+import { MapPin } from "lucide-react";
+
+export const PropertyPageList = () => {
+  const { id } = useParams<{ id: string }>();
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+
+  const { currentProperty, loading, error } = useAppSelector(
+    (state) => state.clickProperties // Make sure this matches your slice name
+  );
+
+  useEffect(() => {
+    if (!id) {
+      navigate("/");
+      return;
+    }
+
+    dispatch(fetchPropertyDetails(id));
+
+    return () => {
+      dispatch(clearCurrentProperty());
+    };
+  }, [id, dispatch, navigate]);
+
+  if (loading) return <Loader />;
+
+  if (error)
+    return (
+      <div className="text-center py-10">
+        <div className="text-red-500 mb-4">Error: {error}</div>
+        <button
+          onClick={() => dispatch(fetchPropertyDetails(id!))}
+          className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+        >
+          Retry Loading
+        </button>
+      </div>
+    );
+
+  if (!currentProperty)
+    return <div className="text-center py-10">No property data available</div>;
+
+  return (
+    <div className="min-h-screen grid grid-cols-1 lg:grid-cols-12 max-w-[1500px] mx-auto">
+      {/* Left Column - Main Content */}
+      <div className="lg:col-span-8 p-4 md:p-6">
+        <h1 className="text-3xl font-bold mb-4">{currentProperty.title}</h1>
+
+        <div className="flex items-center text-gray-600 mb-6">
+          <MapPin className="h-5 mr-2" />
+          {currentProperty.address}, {currentProperty.city}
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+          <div className="bg-white p-4 rounded-lg shadow">
+            <h3 className="text-xl font-semibold mb-2">Details</h3>
+            <p>Price: ${currentProperty.price.toLocaleString()}</p>
+            <p>Bedrooms: {currentProperty.bedroomNumber}</p>
+            <p>Bathrooms: {currentProperty.bathroomNumber}</p>
+          </div>
+
+          <div className="bg-white p-4 rounded-lg shadow">
+            <h3 className="text-xl font-semibold mb-2">Features</h3>
+            <p>Property Type: {currentProperty.property}</p>
+            <p>Size: {currentProperty.totalSize} sqft</p>
+          </div>
+        </div>
+
+        <div className="mb-8">
+          <h3 className="text-xl font-semibold mb-2">Description</h3>
+          <p className="text-gray-700">{currentProperty.description}</p>
+        </div>
+      </div>
+
+      {/* Right Column - Sidebar */}
+      <div className="lg:col-span-4 p-4 md:p-6 bg-gray-50">
+        <div className="sticky top-4">
+          <div className="bg-white p-6 rounded-lg shadow">
+            <h3 className="text-xl font-semibold mb-4">Contact</h3>
+            <button className="w-full bg-blue-500 text-white py-2 rounded hover:bg-blue-600">
+              Contact Agent
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
