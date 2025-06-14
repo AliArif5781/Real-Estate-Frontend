@@ -1,13 +1,13 @@
 import React, { useState } from "react";
 import toast from "react-hot-toast";
 import { Link, useNavigate } from "react-router-dom";
-import Loader from "../components/Loader";
-import Button from "../components/Button";
+import { Loader } from "../components/Loader";
+import { Button } from "../components/Button";
 import { Form } from "../components/Form";
 import image1 from "/image1.webp";
 import { login } from "../services/authControllers";
 
-const Login = () => {
+export const Login = () => {
   const navigate = useNavigate();
   const [isLoading, setIsloading] = useState<boolean>(false);
   const [formData, setFormData] = useState({
@@ -53,7 +53,7 @@ const Login = () => {
               status="idle"
               errorMessage="Signup failed. Please try again."
               successMessage="Account created successfully!"
-              submitText="Create Account"
+              // submitText="Create Account"
               className="space-y-6 w-full"
             >
               <div className="space-y-2">
@@ -83,10 +83,9 @@ const Login = () => {
                   onChange={handleChange}
                   className="w-full px-3 py-2 border rounded-md border-none outline-none"
                   required
-                  minLength={8}
                 />
               </div>
-
+              {/* 
               <div className="my-6">
                 <div className="relative">
                   <div className="absolute inset-0 flex items-center">
@@ -99,7 +98,7 @@ const Login = () => {
                   </div>
                 </div>
 
-                {/* Google Login Button */}
+                Google Login Button
                 <div className="flex justify-center mt-6">
                   <button className="px-5 py-3  max-w-xs flex items-center justify-center gap-3 border border-gray-300 rounded-lg bg-white text-gray-700 font-medium shadow-sm hover:shadow-md transition-all duration-200 hover:bg-gray-50 focus:outline-none">
                     <img
@@ -111,7 +110,7 @@ const Login = () => {
                     <span>Continue with Google</span>
                   </button>
                 </div>
-              </div>
+              </div> */}
               <Button
                 className={`w-[8rem] ${
                   isLoading ? "opacity-50 cursor-not-allowed" : ""
@@ -157,5 +156,3 @@ const Login = () => {
     </div>
   );
 };
-
-export default Login;
