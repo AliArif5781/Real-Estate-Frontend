@@ -83,10 +83,11 @@ export const HeroSection = () => {
 
           <div className="max-w-full prose prose-sm sm:prose-base text-gray-600 mb-8">
             <p>
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quae
-              tempore illo soluta eius asperiores velit. Lorem ipsum dolor sit
-              amet consectetur adipisicing elit. Ullam et, totam tempora
-              corrupti odio esse quibusdam? Quibusdam facilis odit ut!
+              Discover your dream property in Lahore's most sought-after
+              neighborhoods. Our curated listings feature luxury homes, modern
+              apartments, and prime commercial spaces, all with verified details
+              and high-quality visuals. With personalized service and expert
+              market insights, we make buying, selling, or renting seamless.
             </p>
           </div>
 
@@ -95,9 +96,9 @@ export const HeroSection = () => {
               <button className="flex-1 px-4 py-3 text-sm sm:text-base font-medium text-white bg-black hover:bg-gray-800 transition-colors">
                 Buy
               </button>
-              <button className="flex-1 px-4 py-3 text-sm sm:text-base font-medium text-black bg-gray-100 hover:bg-gray-200 transition-colors">
+              {/* <button className="flex-1 px-4 py-3 text-sm sm:text-base font-medium text-black bg-gray-100 hover:bg-gray-200 transition-colors">
                 Rent
-              </button>
+              </button> */}
             </div>
 
             <div className="p-4 sm:p-6">
