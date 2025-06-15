@@ -80,23 +80,6 @@ export const Header = () => {
   // Header.tsx
   const handleUserClick = async () => {
     setIsUserDropdownOpen(true);
-
-    // if (willOpen && !userData && !loading) {
-    //   try {
-    //     const resultAction = await dispatch(getUserData() as any);
-    //     const userData = unwrapResult(resultAction);
-    //     console.log("User data loaded:", userData);
-    //   } catch (error) {
-    //     console.error("Error loading user data:", error);
-    //     toast.error(
-    //       typeof error === "string"
-    //         ? error
-    //         : error instanceof Error
-    //         ? error.message
-    //         : "Failed to load user data"
-    //     );
-    //   }
-    // }
   };
 
   const handleLogout = async () => {
@@ -287,12 +270,19 @@ export const Header = () => {
                             Your Profile
                           </NavLink>
                           <NavLink
+                            to="/postPage"
+                            className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                            onClick={() => setIsUserDropdownOpen(false)}
+                          >
+                            Create Post
+                          </NavLink>
+                          {/* <NavLink
                             to="/settings"
                             className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                             onClick={() => setIsUserDropdownOpen(false)}
                           >
                             Settings
-                          </NavLink>
+                          </NavLink> */}
                           <button
                             className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                             onClick={handleLogout}
