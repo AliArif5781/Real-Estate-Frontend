@@ -2,11 +2,12 @@ import React, { useState } from "react";
 import userLogo from "/userLogo.png";
 import { ChevronRight, X } from "lucide-react";
 import { useNavigate } from "react-router-dom"; // Assuming you're using React Router
+import { useAppSelector } from "../app/hook";
 
 export const UserProfile = () => {
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const navigate = useNavigate();
-
+  const { data, loading, error } = useAppSelector((state) => state.userData);
   const handleBackClick = () => {
     navigate(-1); // Goes back to previous page
     // Alternatively use navigate('/') to go to home page
@@ -78,8 +79,10 @@ export const UserProfile = () => {
                 className="h-16 w-16 sm:h-20 sm:w-20 rounded-full"
               />
               <div className="text-center sm:text-left">
-                <h3 className="font-bold text-lg">Joylon Dias</h3>
-                <p className="text-gray-600 text-sm">Member since 2022</p>
+                <h3 className="font-bold text-lg">
+                  {data ? data.firstName.toUpperCase() : loading}
+                </h3>
+                <p className="text-gray-600 text-sm">Member since 2025</p>
               </div>
             </div>
           </div>
@@ -92,7 +95,9 @@ export const UserProfile = () => {
             </div>
             <div className="md:col-span-8">
               <div className="flex flex-col sm:flex-row justify-between items-center gap-2">
-                <span className="text-gray-700">ali@gmail.com</span>
+                <span className="text-gray-700">
+                  {data ? data.email : loading}
+                </span>
               </div>
             </div>
           </div>
