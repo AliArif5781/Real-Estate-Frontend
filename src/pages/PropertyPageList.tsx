@@ -3,79 +3,194 @@ import {
   Bed,
   BedDouble,
   Bus,
+  ChevronLeft,
+  ChevronRight,
   Map,
   MapPin,
   MapPinCheck,
+  PawPrint,
   School,
   Square,
   SquarePlus,
   Utensils,
+  UtilityPole,
+  WalletCards,
+  X,
 } from "lucide-react";
+import { useEffect, useState, type KeyboardEvent } from "react";
+import { useAppDispatch, useAppSelector } from "../app/hook";
+import { useParams } from "react-router-dom";
+import { fetchPropertyDetails } from "../features/property/SearchPropertySlice";
+import { Loader } from "../components/Loader";
+import userLogo from "/userLogo.png";
+
+interface Property {
+  images: string[];
+  // other properties...
+}
+
+interface PropertyGalleryProps {
+  currentProperty?: Property; // Make it optional if needed
+}
 
 export const PropertyPageList = () => {
+  const { id } = useParams();
+  const dispatch = useAppDispatch();
+  const [isFullscreen, setIsFullscreen] = useState(false);
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+
+  const { currentProperty, loading, error } = useAppSelector(
+    (state) => state.clickProperties
+  );
+
+  const openFullscreen = (index: number) => {
+    setCurrentImageIndex(index);
+    setIsFullscreen(true);
+  };
+
+  const closeFullscreen = () => setIsFullscreen(false);
+
+  const goToPrevious = () => {
+    if (!currentProperty?.images?.length) return;
+
+    setCurrentImageIndex((prev) =>
+      prev === 0 ? currentProperty.images.length - 1 : prev - 1
+    );
+  };
+
+  const goToNext = () => {
+    if (!currentProperty?.images?.length) return;
+
+    setCurrentImageIndex((prev) =>
+      prev === currentProperty.images.length - 1 ? 0 : prev + 1
+    );
+  };
+
+  const userData = useAppSelector((state) => state.userData);
+  console.log(userData);
+  useEffect(() => {
+    if (id) {
+      dispatch(fetchPropertyDetails(id));
+    }
+  }, [id, dispatch]);
+
+  if (loading) return <Loader />;
+  if (error) return <div>Error: {error}</div>;
+  if (!currentProperty) return <div>Property not found</div>;
+
   return (
     <div className="min-h-screen grid grid-cols-1 lg:grid-cols-12 max-w-[1500px] mx-auto">
       {/* Left Column - Image Gallery */}
       <div className="lg:col-span-8 p-4 md:p-6 flex flex-col gap-4">
-        {" "}
-        {/* Added flex layout */}
-        {/* Image Gallery Section */}
         <div className="grid grid-cols-1 md:grid-cols-12 gap-3 md:gap-4">
-          <div className="md:col-span-8">
+          <div
+            className="md:col-span-8 cursor-pointer"
+            onClick={() => openFullscreen(0)}
+          >
             <img
-              src="https://images.unsplash.com/photo-1749288752497-5fb00d855426?q=80&w=2072&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-              alt="Main"
-              className="w-full h-full max-h-[30rem] md:max-h-[40rem] object-cover rounded-lg"
+              src={currentProperty.images[0]}
+              alt={currentProperty.title}
+              className="w-full h-full max-h-auto md:max-h-[28rem] object-cover rounded-lg"
             />
           </div>
-          <div className="grid grid-cols-3 md:grid-cols-1 md:col-span-4 gap-3 md:gap-4 mt-3 md:mt-0 h-full items-center">
-            {[1, 2, 3].map((item) => (
-              <img
-                key={item}
-                src="https://plus.unsplash.com/premium_photo-1746718184918-05d7cbda1477?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHw5fHx8ZW58MHx8fHx8"
-                alt={`Thumbnail ${item}`}
-                className="w-full h-20 md:h-[10rem] object-cover rounded-lg"
-              />
+          <div className="grid grid-cols-3 md:grid-cols-1 md:col-span-4 gap-3 md:gap-4 mt-3 md:mt-0 h-full items-center overflow-y-auto">
+            {currentProperty.images.slice(1, 4).map((imageUrl, index) => (
+              <div
+                key={index}
+                className="cursor-pointer"
+                onClick={() => openFullscreen(index + 1)}
+              >
+                <img
+                  src={imageUrl}
+                  alt={`${currentProperty.title} thumbnail ${index + 1}`}
+                  className="w-[15rem] h-20 md:h-[7.5rem] object-cover rounded-lg"
+                />
+              </div>
             ))}
           </div>
         </div>
+        {/*  */}
+        {isFullscreen && (
+          <div className="fixed inset-0 bg-black bg-opacity-90 z-50 flex items-center justify-center p-4">
+            <button
+              onClick={closeFullscreen}
+              className="absolute top-4 right-4 text-white p-2 rounded-full hover:bg-white hover:bg-opacity-10 transition"
+            >
+              <X size={24} />
+            </button>
+
+            <button
+              onClick={goToPrevious}
+              className="absolute left-4 text-white p-2 rounded-full hover:bg-white hover:bg-opacity-10 transition"
+            >
+              <ChevronLeft size={32} />
+            </button>
+
+            <div className="max-w-full max-h-full">
+              <img
+                src={currentProperty.images[currentImageIndex]}
+                alt={`Fullscreen view ${currentImageIndex + 1}`}
+                className="max-h-[90vh] max-w-full object-contain"
+              />
+            </div>
+
+            <button
+              onClick={goToNext}
+              className="absolute right-4 text-white p-2 rounded-full hover:bg-white hover:bg-opacity-10 transition"
+            >
+              <ChevronRight size={32} />
+            </button>
+
+            <div className="absolute bottom-4 text-white text-sm">
+              {currentImageIndex + 1} / {currentProperty.images.length}
+            </div>
+          </div>
+        )}
+        {/*  */}
         {/* Title Section - Fixed the grid structure */}
         <div className="w-full grid grid-cols-12 gap-4 p-4 rounded-lg">
           <div className="col-span-12 md:col-span-6 space-y-5">
-            <h3 className="text-3xl font-bold">Test Title</h3>
+            <h3 className="text-3xl font-bold">{currentProperty.title}</h3>
             <div className="text-gray-600 flex items-center">
-              <MapPin className="h-4" /> Test address
+              <MapPin className="h-4" /> {currentProperty.address},{" "}
+              {currentProperty.city}
             </div>
+
             <span className="text-2xl font-semibold bg-amber-300 p-1 rounded-md inline-block mt-2">
-              $1000
+              {currentProperty.price.toLocaleString("en-Pk", {
+                style: "currency",
+                currency: "PKR",
+                maximumFractionDigits: 0,
+              })}
             </span>
+            <div className="flex gap-2 mt-2">
+              <span className="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-medium">
+                Rent
+              </span>
+              <span className="bg-amber-100 text-amber-800 px-3 py-1 rounded-full text-sm font-medium">
+                Apartment
+              </span>
+            </div>
           </div>
-          <div className="col-span-12 md:col-span-6 flex items-center justify-end">
+          <div className="col-span-6 md:col-span-6 flex items-center justify-end">
             <div className="flex items-center gap-3 bg-green-100 px-4 py-2 rounded-full">
-              <div className="h-8 w-8 rounded-full bg-gray-300 overflow-hidden">
+              <div className="h-8 w-8 rounded-full  overflow-hidden">
                 <img
-                  src="https://example.com/avatar.jpg"
+                  src={userLogo}
                   alt="User Avatar"
                   className="h-full w-full object-cover"
                 />
               </div>
-              <span className="font-medium text-gray-700">User Name</span>
+              <span className="font-medium text-gray-700">
+                {userData.data?.firstName.toLocaleUpperCase()}
+              </span>
             </div>
           </div>
         </div>
         {/* description */}
         <div className="px-5">
           <h3 className="text-2xl font-bold my-2">Description</h3>
-          <p className="text-base">
-            harum adipisci ut voluptatum! Ea illum amet voluptas quam non,
-            labore illo placeat iusto nisi est minima libero atque at! Nisi
-            ratione nam vitae at. Corporis quibusdam, tempora minus voluptas
-            velit nulla illo quo vero, eveniet laudantium commodi sequi, ipsam
-            aliquam porro quas similique. Nulla eligendi optio provident
-            adipisci recusandae laborum architecto expedita nam quasi tempora,
-            perferendis beatae ut voluptate itaque reiciendis repudiandae
-            similique quibusdam in fuga?
-          </p>
+          <p className="text-base">{currentProperty.description}</p>
         </div>
       </div>
 
@@ -90,12 +205,12 @@ export const PropertyPageList = () => {
             <div className="bg-white p-4 rounded-lg shadow-sm">
               <div className="flex items-center gap-4">
                 <div className="flex-shrink-0 p-3 bg-gray-100 rounded-lg">
-                  <Map className="h-5 w-5 text-gray-500" />
+                  <UtilityPole className="h-5 w-5 text-gray-500" />
                 </div>
                 <div className="flex-1">
                   <h4 className="font-medium text-gray-900">Utilities</h4>
                   <p className="text-sm text-gray-500 mt-1">
-                    Owner is responsible
+                    {currentProperty.utilitiesPolicy}
                   </p>
                 </div>
               </div>
@@ -105,11 +220,13 @@ export const PropertyPageList = () => {
             <div className="bg-white p-4 rounded-lg shadow-sm">
               <div className="flex items-center gap-4">
                 <div className="flex-shrink-0 p-3 bg-gray-100 rounded-lg">
-                  <Map className="h-5 w-5 text-gray-500" />
+                  <PawPrint className="h-5 w-5 text-gray-500" />
                 </div>
                 <div className="flex-1">
                   <h4 className="font-medium text-gray-900">Pet Policy</h4>
-                  <p className="text-sm text-gray-500 mt-1">Pets not Allowed</p>
+                  <p className="text-sm text-gray-500 mt-1">
+                    {currentProperty.petPolicy}
+                  </p>
                 </div>
               </div>
             </div>
@@ -118,11 +235,15 @@ export const PropertyPageList = () => {
             <div className="bg-white p-4 rounded-lg shadow-sm">
               <div className="flex items-center gap-4">
                 <div className="flex-shrink-0 p-3 bg-gray-100 rounded-lg">
-                  <Map className="h-5 w-5 text-gray-500" />
+                  <WalletCards className="h-5 w-5 text-gray-500" />
                 </div>
                 <div className="flex-1">
-                  <h4 className="font-medium text-gray-900">Income Policy</h4>
-                  {/* Add policy details here when available */}
+                  <h4 className="font-medium text-gray-900">
+                    Utilities Policy
+                  </h4>
+                  <p className="text-sm text-gray-500 mt-1">
+                    {currentProperty.utilitiesPolicy}
+                  </p>{" "}
                 </div>
               </div>
             </div>
@@ -133,10 +254,9 @@ export const PropertyPageList = () => {
             <h3 className="text-2xl font-semibold mb-4">Sizes</h3>
             <div className="grid grid-cols-3 gap-4">
               <div className="flex items-center gap-4 p-1 bg-white rounded-md">
-                <Square className="w-8 h-8 text-gray-600" />{" "}
-                {/* Increased size */}
-                <span className="text-xs md:text-sm text-gray-700 font-bold">
-                  100 sqft
+                <Square className=" h-6 text-gray-600" /> {/* Increased size */}
+                <span className="text-xs text-gray-700 font-bold">
+                  {currentProperty.totalSize} sq ft
                 </span>
                 {/* Slightly larger text */}
               </div>
@@ -144,14 +264,14 @@ export const PropertyPageList = () => {
                 <BedDouble className="w-8 h-8 text-gray-600" />
                 {/* Increased size */}
                 <span className="text-xs md:text-sm text-gray-700 font-bold">
-                  1 bed
+                  {currentProperty.bedroomNumber} bed
                 </span>
               </div>
               <div className="p-1 bg-white rounded-md flex items-center justify-center gap-4">
                 <Bath className="w-8 h-8 text-gray-600" />
                 {/* Increased size */}
                 <span className="text-xs md:text-sm text-gray-700 font-bold">
-                  1 bath
+                  {currentProperty.bathroomNumber} bath
                 </span>
               </div>
             </div>
@@ -167,7 +287,9 @@ export const PropertyPageList = () => {
                 <School className="text-yellow-600" size={24} />
                 <div>
                   <p className="text-sm font-semibold text-black">School</p>
-                  <p className="text-xs text-gray-600">200m</p>
+                  <p className="text-xs text-gray-600">
+                    {currentProperty.school}m
+                  </p>
                 </div>
               </div>
 
@@ -176,7 +298,9 @@ export const PropertyPageList = () => {
                 <Bus className="text-yellow-600" size={24} />
                 <div>
                   <p className="text-sm font-semibold text-black">Bus Stop</p>
-                  <p className="text-xs text-gray-600">300m</p>
+                  <p className="text-xs text-gray-600">
+                    {currentProperty.BusStop}m
+                  </p>
                 </div>
               </div>
 
@@ -185,7 +309,9 @@ export const PropertyPageList = () => {
                 <Utensils className="text-yellow-600" size={24} />
                 <div>
                   <p className="text-sm font-semibold text-black">Restaurant</p>
-                  <p className="text-xs text-gray-600">400m</p>
+                  <p className="text-xs text-gray-600">
+                    {currentProperty.Resturant}m
+                  </p>
                 </div>
               </div>
             </div>
