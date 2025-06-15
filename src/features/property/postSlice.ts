@@ -26,6 +26,7 @@ export interface FormData {
   LoadShedding: string;
   Water: string;
   Gas: string;
+  Best?: string;
 }
 
 const initialState: FormData = {
@@ -53,6 +54,7 @@ const initialState: FormData = {
   LoadShedding: "",
   Water: "",
   Gas: "",
+  Best: "",
 };
 
 export const postSlice = createSlice({
