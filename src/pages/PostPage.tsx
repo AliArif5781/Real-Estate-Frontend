@@ -112,6 +112,7 @@ export const PostPage = () => {
         LoadShedding: formData.LoadShedding,
         Water: formData.Water,
         Gas: formData.Gas,
+        Best: formData.Best,
       };
 
       // 3. Send to backend
@@ -566,6 +567,23 @@ export const PostPage = () => {
               placeholder="Gas Schedule"
             />
           </div>
+          <div className="space-y-2">
+            <label
+              htmlFor="Best"
+              className="block text-sm font-medium text-gray-700"
+            >
+              Best Option
+            </label>
+            <input
+              type="text"
+              id="Best"
+              name="Best"
+              value={formData.Best}
+              onChange={handleInputChange}
+              className="w-full px-3 py-2 md:px-4 md:py-3 border outline-none rounded-lg"
+              placeholder="Best Option"
+            />
+          </div>
         </div>
 
         {/* Submit Button */}
@@ -592,7 +610,7 @@ export const PostPage = () => {
 
           {/* Image Upload Area */}
           <div
-            className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center cursor-pointer hover:border-blue-500 transition-colors"
+            className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center cursor-pointer hover:border-black transition-colors duration-300"
             onClick={() => fileInputRef.current?.click()}
           >
             <input
