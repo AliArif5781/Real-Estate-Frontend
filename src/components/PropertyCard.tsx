@@ -3,6 +3,7 @@ import { Bath, BedDouble, Bookmark, MapPin } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useAppDispatch } from "../app/hook";
 import { fetchPropertyDetails } from "../features/property/SearchPropertySlice";
+import toast from "react-hot-toast";
 
 // Updated Property interface to match backend data
 export interface Property {
@@ -44,11 +45,16 @@ export const PropertyCard: React.FC<PropertyCardProps> = ({ propertyData }) => {
     return <div>No properties found</div>;
   }
 
-  const handleClick = () => {
+  const handleClick = async () => {
     // Preload data before navigation
-    dispatch(fetchPropertyDetails(propertyData._id)).then(() => {
+    try {
+      await dispatch(fetchPropertyDetails(propertyData._id));
       navigate(`/property/${propertyData._id}`);
-    });
+    } catch (error) {
+      toast.error("Failed to fetch property details", {
+        duration: 2000,
+      });
+    }
   };
   return (
     <div
@@ -75,6 +81,14 @@ export const PropertyCard: React.FC<PropertyCardProps> = ({ propertyData }) => {
           <span className="text-lg font-semibold bg-amber-300 p-1 rounded-md my-2 inline-block">
             ${propertyData.price.toLocaleString()}
           </span>
+          <div className="flex gap-3 mt-2">
+            <span className="p-[3px] px-2 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+              {propertyData.type}
+            </span>
+            <span className="p-[3px] px-2 rounded-full text-xs font-medium bg-teal-100 text-teal-800">
+              {propertyData.property}
+            </span>
+          </div>
         </div>
 
         <div className="flex justify-between items-center py-3">
