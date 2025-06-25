@@ -1,6 +1,3 @@
-import video from "/video.mp4";
-import img from "/image1.webp";
-import { useMemo } from "react";
 import bgImage from "/bg.png";
 
 export const Aboutus = () => {
