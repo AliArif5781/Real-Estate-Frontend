@@ -27,6 +27,10 @@ export interface FormData {
   Water: string;
   Gas: string;
   Best?: string;
+  //
+  Hospital: string;
+  Garden: string;
+  Gym: string;
 }
 
 const initialState: FormData = {
@@ -55,6 +59,9 @@ const initialState: FormData = {
   Water: "",
   Gas: "",
   Best: "",
+  Hospital: "",
+  Garden: "",
+  Gym: "",
 };
 
 export const postSlice = createSlice({
