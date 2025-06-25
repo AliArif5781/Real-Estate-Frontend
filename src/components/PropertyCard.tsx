@@ -32,6 +32,7 @@ export interface Property {
   LoadShedding?: string; // Added missing fields
   Water?: string;
   Gas?: string;
+  Best?: string;
 }
 
 interface PropertyCardProps {
@@ -78,9 +79,20 @@ export const PropertyCard: React.FC<PropertyCardProps> = ({ propertyData }) => {
             <MapPin className="h-5 mt-[0.5px]" /> {propertyData.address},{" "}
             {propertyData.city}
           </p>
-          <span className="text-lg font-semibold bg-amber-300 p-1 rounded-md my-2 inline-block">
-            ${propertyData.price.toLocaleString()}
-          </span>
+          <div className="flex justify-between items-center">
+            <span className="text-lg font-semibold bg-amber-300 p-1 rounded-md my-2 inline-block">
+              ${propertyData.price.toLocaleString()}
+            </span>
+            <span
+              className={`${
+                propertyData?.Best === "Best"
+                  ? "bg-[#dad7cd] text-xs px-[5px] p-[3px] font-medium rounded-lg"
+                  : ""
+              } `}
+            >
+              {propertyData?.Best || ""}
+            </span>
+          </div>
           <div className="flex gap-3 mt-2">
             <span className="p-[3px] px-2 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
               {propertyData.type}
