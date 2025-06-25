@@ -181,7 +181,7 @@ export const Header = () => {
               )}
             </NavLink>
 
-            <NavLink
+            {/* <NavLink
               to="/contact"
               className={({ isActive }) =>
                 `relative py-2 px-1 text-gray-700 font-medium transition-all duration-300 ${
@@ -207,7 +207,7 @@ export const Header = () => {
                   )}
                 </>
               )}
-            </NavLink>
+            </NavLink> */}
 
             {/* User Profile Section */}
             <div className="relative" ref={dropdownRef}>
