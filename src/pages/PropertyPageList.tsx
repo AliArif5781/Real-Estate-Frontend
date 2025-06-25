@@ -1,38 +1,34 @@
 import {
   Bath,
-  Bed,
   BedDouble,
   Bus,
   ChevronLeft,
   ChevronRight,
   GlassWater,
-  Map,
   MapPin,
-  MapPinCheck,
   PawPrint,
   School,
   Square,
-  SquarePlus,
   Utensils,
   UtilityPole,
   WalletCards,
   X,
 } from "lucide-react";
-import { useEffect, useState, type KeyboardEvent } from "react";
+import { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../app/hook";
 import { useParams } from "react-router-dom";
 import { fetchPropertyDetails } from "../features/property/SearchPropertySlice";
 import { Loader } from "../components/Loader";
 import userLogo from "/userLogo.png";
 
-interface Property {
-  images: string[];
-  // other properties...
-}
+// interface Property {
+//   images: string[];
+//   // other properties...
+// }
 
-interface PropertyGalleryProps {
-  currentProperty?: Property; // Make it optional if needed
-}
+// interface PropertyGalleryProps {
+//   currentProperty?: Property; // Make it optional if needed
+// }
 
 export const PropertyPageList = () => {
   const { id } = useParams();
