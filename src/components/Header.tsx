@@ -1,12 +1,10 @@
 import { useState, useEffect, useRef } from "react";
-import { data, Link, NavLink, useNavigate } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 // import { User } from "lucide-react";
 import userLogo from "/userLogo.png";
-import { getUserData } from "../features/property/UserData";
 import toast from "react-hot-toast";
 import { useAppDispatch, useAppSelector } from "../app/hook";
-import { unwrapResult } from "@reduxjs/toolkit";
 import { logoutUser } from "../features/property/LogoutUser/logoutUser";
 // import { Skeleton } from "@/components/ui/skeleton"; // Replace with your skeleton component
 
