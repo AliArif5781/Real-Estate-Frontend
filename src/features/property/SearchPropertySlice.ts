@@ -19,7 +19,7 @@ export const fetchPropertyDetails = createAsyncThunk(
   async (id: string, { rejectWithValue }) => {
     try {
       const response = await searchApiPost.get(`/api/${id}`);
-      console.log(response, "r");
+      console.log(response.data, "r");
       if (!response.data.success) {
         throw new Error(response.data.message || "Failed to fetch property");
       }
@@ -33,7 +33,8 @@ export const fetchPropertyDetails = createAsyncThunk(
     }
   }
 );
-
+// died , registery,
+// competition between zameen.com,
 const propertySlice = createSlice({
   name: "clickProperties", // Changed to match your useSelector
   initialState,
