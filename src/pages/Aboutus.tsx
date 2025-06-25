@@ -1,21 +1,22 @@
 import video from "/video.mp4";
 import img from "/image1.webp";
 import { useMemo } from "react";
+import bgImage from "/bg.png";
 
 export const Aboutus = () => {
-  const videoElement = useMemo(
-    () => (
-      <video
-        src={video}
-        controls
-        preload="none"
-        poster={img}
-        playsInline
-        className="w-full h-full object-cover"
-      />
-    ),
-    []
-  );
+  // const videoElement = useMemo(
+  //   () => (
+  //     <video
+  //       src={video}
+  //       controls
+  //       preload="none"
+  //       poster={img}
+  //       playsInline
+  //       className="w-full h-full object-cover"
+  //     />
+  //   ),
+  //   []
+  // );
   return (
     <div className="min-h-screen grid grid-cols-1 lg:grid-cols-12 mx-auto max-w-[1200px] px-4 sm:px-6 lg:px-8 py-12 sm:py-24">
       {/* Text Content */}
@@ -40,7 +41,8 @@ export const Aboutus = () => {
 
       <div className="lg:col-span-5 order-1 lg:order-2 flex items-center justify-center">
         <div className="w-full h-64 sm:h-80 md:h-[30rem] object-cover  rounded-xl overflow-hidden flex items-center justify-center">
-          {videoElement}
+          {/* {videoElement} */}
+          <img src={bgImage} alt="" />
         </div>
       </div>
     </div>
