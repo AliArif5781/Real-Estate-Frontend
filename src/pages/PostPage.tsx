@@ -113,6 +113,9 @@ export const PostPage = () => {
         Water: formData.Water,
         Gas: formData.Gas,
         Best: formData.Best,
+        Hospital: formData.Hospital,
+        Garden: formData.Garden,
+        Gym: formData.Gym,
       };
 
       // 3. Send to backend
@@ -586,6 +589,65 @@ export const PostPage = () => {
           </div>
         </div>
 
+        {/* Eight */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
+          <div className="space-y-2">
+            <label
+              htmlFor="Hospital"
+              className="block text-sm font-medium text-gray-700"
+            >
+              Hospital
+            </label>
+            <input
+              type="number"
+              step="any"
+              id="Hospital"
+              name="Hospital"
+              value={formData.Hospital}
+              onChange={handleInputChange}
+              className="w-full px-3 py-2 md:px-4 md:py-3 border outline-none rounded-lg"
+              placeholder="Enter Hospital"
+            />
+          </div>
+
+          <div className="space-y-2">
+            <label
+              htmlFor="Garden"
+              className="block text-sm font-medium text-gray-700"
+            >
+              Garden
+            </label>
+            <input
+              type="number"
+              step="any"
+              id="Garden"
+              name="Garden"
+              value={formData.Garden}
+              onChange={handleInputChange}
+              className="w-full px-3 py-2 md:px-4 md:py-3 border outline-none rounded-lg"
+              placeholder="Enter Garden"
+            />
+          </div>
+
+          <div className="space-y-2">
+            <label
+              htmlFor="Gym"
+              className="block text-sm font-medium text-gray-700"
+            >
+              Gym
+            </label>
+            <input
+              type="number"
+              step="any"
+              id="Gym"
+              name="Gym"
+              value={formData.Gym}
+              onChange={handleInputChange}
+              className="w-full px-3 py-2 md:px-4 md:py-3 border outline-none rounded-lg"
+              placeholder="Enter Gym"
+            />
+          </div>
+        </div>
         {/* Submit Button */}
         <div className="flex justify-end pt-6">
           <button
