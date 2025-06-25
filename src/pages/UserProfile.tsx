@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import userLogo from "/userLogo.png";
 import { ChevronRight, X } from "lucide-react";
 import { useNavigate } from "react-router-dom"; // Assuming you're using React Router
@@ -7,7 +7,7 @@ import { useAppSelector } from "../app/hook";
 export const UserProfile = () => {
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const navigate = useNavigate();
-  const { data, loading, error } = useAppSelector((state) => state.userData);
+  const { data, loading } = useAppSelector((state) => state.userData);
   const handleBackClick = () => {
     navigate(-1); // Goes back to previous page
     // Alternatively use navigate('/') to go to home page
