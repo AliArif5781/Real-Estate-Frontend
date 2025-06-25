@@ -18,7 +18,7 @@ export const Signup = () => {
     password: "",
   });
   const [status, setStatus] = useState("idle");
-
+  console.log(setStatus);
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsloading(true);
