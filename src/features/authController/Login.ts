@@ -1,6 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { api } from "../../api/api";
-import { tr } from "motion/react-client";
 
 export interface LoginState {
   email: string;
