@@ -1,14 +1,11 @@
 import { useEffect, useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
-import { Search } from "lucide-react";
+import { useLocation } from "react-router-dom";
 import { PropertyCard } from "../components/PropertyCard";
 import { useAppDispatch, useAppSelector } from "../app/hook";
 import { searchProperties } from "../features/property/PropertySlice";
-import toast from "react-hot-toast";
 import { Loader } from "../components/Loader";
 export const MainPage = () => {
   const location = useLocation();
-  const navigate = useNavigate();
   const dispatch = useAppDispatch();
 
   // Get search results from Redux store
@@ -26,7 +23,7 @@ export const MainPage = () => {
     maxPrice: initialSearchParams.maxPrice || "",
     bedroom: "",
   });
-
+  console.log(setSearchInputs);
   // Handle search form changes
   // const handleInputChange = (
   //   e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
