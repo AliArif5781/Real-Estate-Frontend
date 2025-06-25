@@ -5,6 +5,7 @@ import {
   Bus,
   ChevronLeft,
   ChevronRight,
+  GlassWater,
   Map,
   MapPin,
   MapPinCheck,
@@ -67,7 +68,7 @@ export const PropertyPageList = () => {
   };
 
   const userData = useAppSelector((state) => state.userData);
-  console.log(userData);
+  // console.log(userData);
   useEffect(() => {
     if (id) {
       dispatch(fetchPropertyDetails(id));
@@ -171,6 +172,12 @@ export const PropertyPageList = () => {
                 Apartment
               </span>
             </div>
+            <div className="flex w-full gap-5 mt-2">
+              <span className="bg-gray-200 text-black px-3 py-1 rounded-full text-sm font-medium">
+                <span className="font-bold">100%</span>{" "}
+                <span className="">Interest-Free</span>
+              </span>
+            </div>
           </div>
           <div className="col-span-6 md:col-span-6 flex items-center justify-end">
             <div className="flex items-center gap-3 bg-green-100 px-4 py-2 rounded-full">
@@ -255,23 +262,79 @@ export const PropertyPageList = () => {
             <div className="grid grid-cols-3 gap-4">
               <div className="flex items-center gap-4 p-1 bg-white rounded-md">
                 <Square className=" h-6 text-gray-600" /> {/* Increased size */}
-                <span className="text-xs text-gray-700 font-bold">
+                <span className="text-xs text-gray-700">
                   {currentProperty.totalSize} sq ft
                 </span>
                 {/* Slightly larger text */}
               </div>
               <div className="p-1 bg-white rounded-md flex items-center justify-center gap-4">
-                <BedDouble className="w-8 h-8 text-gray-600" />
+                <BedDouble className="w-8 h-6 text-gray-600" />
                 {/* Increased size */}
-                <span className="text-xs md:text-sm text-gray-700 font-bold">
+                <span className="text-xs md:text-sm text-gray-700">
                   {currentProperty.bedroomNumber} bed
                 </span>
               </div>
               <div className="p-1 bg-white rounded-md flex items-center justify-center gap-4">
-                <Bath className="w-8 h-8 text-gray-600" />
+                <Bath className="w-8 h-6 text-gray-600" />
                 {/* Increased size */}
-                <span className="text-xs md:text-sm text-gray-700 font-bold">
+                <span className="text-xs md:text-sm text-gray-700">
                   {currentProperty.bathroomNumber} bath
+                </span>
+              </div>
+            </div>
+          </div>
+          {/* Triple Crisis */}
+          <div className="p-4 rounded-lg shadow-sm">
+            <h3 className="text-2xl font-semibold mb-4">Triple Crisis</h3>
+            <div className="grid grid-cols-3 gap-4">
+              <div className="flex items-center gap-4 p-1 bg-white rounded-md">
+                <img
+                  src="https://www.shutterstock.com/image-vector/electric-pole-line-house-icon-260nw-1503079406.jpg"
+                  alt=""
+                  className="h-9"
+                />
+                <span className="text-xs text-gray-700">
+                  {currentProperty.LoadShedding}{" "}
+                  <span className="font-semibold">/hr</span>
+                </span>
+                {/* Slightly larger text */}
+              </div>
+              <div className="p-1 bg-white rounded-md flex items-center justify-center gap-4">
+                <GlassWater className="w-6 h-6 text-gray-600" />
+                {/* Increased size */}
+                <span className="text-xs md:text-sm text-gray-700">
+                  {currentProperty.Water}
+                </span>
+              </div>
+              <div className="p-1 bg-white rounded-md flex items-center justify-center gap-4">
+                {/* <Bath className="w-8 h-8 text-gray-600" /> */}
+                <img
+                  src="https://w7.pngwing.com/pngs/465/890/png-transparent-computer-icons-natural-gas-fuel-leaf-text-monochrome-thumbnail.png"
+                  alt=""
+                  className="h-6 w-6"
+                />
+                {/* Increased size */}
+                <span className="text-xs text-gray-700">
+                  {currentProperty.Gas}
+                </span>
+              </div>
+            </div>
+          </div>
+          {/* Global Positioning */}
+          <div className="p-4 rounded-lg shadow-sm">
+            <h3 className="text-2xl font-semibold mb-4">Global Positioning</h3>
+            <div className="grid grid-cols-2 gap-4">
+              <div className="flex items-center gap-4 p-1 bg-white rounded-md">
+                Latitude
+                <span className="text-xs md:text-sm text-gray-700 font-bold">
+                  {currentProperty.latitude}{" "}
+                </span>
+                {/* Slightly larger text */}
+              </div>
+              <div className="p-1 bg-white rounded-md flex items-center justify-center gap-4">
+                Longitude
+                <span className="text-xs md:text-sm text-gray-700 font-bold">
+                  {currentProperty.longitude}
                 </span>
               </div>
             </div>
@@ -317,10 +380,11 @@ export const PropertyPageList = () => {
             </div>
           </div>
           {/* location */}
-          <div className="bg-[#fdf4eb] p-6 rounded-lg shadow-md">
-            <h2 className="text-lg font-semibold text-black mb-4">Location</h2>
 
-            {/* <MapContainer
+          {/* <div className="bg-[#fdf4eb] p-6 rounded-lg shadow-md">
+            <h2 className="text-lg font-semibold text-black mb-4">Location</h2> */}
+
+          {/* <MapContainer
               center={position}
               zoom={10}
               scrollWheelZoom={false}
@@ -335,15 +399,15 @@ export const PropertyPageList = () => {
               </Marker>
             </MapContainer> */}
 
-            <div className="mt-4 flex gap-4 justify-between">
+          {/* <div className="mt-4 flex gap-4 justify-between">
               <button className="flex items-center gap-2 px-4 py-2 border border-gray-300 rounded-md hover:bg-gray-100">
                 <span>💬</span> Send a Message
               </button>
               <button className="flex items-center gap-2 px-4 py-2 border border-gray-300 rounded-md hover:bg-gray-100">
                 <span>📌</span> Save the Place
               </button>
-            </div>
-          </div>
+            </div> */}
+          {/* </div> */}
         </div>
       </div>
     </div>
