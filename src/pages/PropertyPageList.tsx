@@ -287,11 +287,11 @@ export const PropertyPageList = () => {
                 <img
                   src="https://www.shutterstock.com/image-vector/electric-pole-line-house-icon-260nw-1503079406.jpg"
                   alt=""
-                  className="h-9"
+                  className="h-6 sm:h-9"
                 />
-                <span className="text-xs text-gray-700">
+                <span className="text-[10px] text-gray-700">
                   {currentProperty.LoadShedding}{" "}
-                  <span className="font-semibold">/hr</span>
+                  <span className=" font-semibold">/hr</span>
                 </span>
                 {/* Slightly larger text */}
               </div>
