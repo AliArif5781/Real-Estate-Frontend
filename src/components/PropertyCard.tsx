@@ -76,8 +76,10 @@ export const PropertyCard: React.FC<PropertyCardProps> = ({ propertyData }) => {
         <div className="flex-grow">
           <h3 className="text-xl font-medium">{propertyData.title}</h3>
           <p className="flex text-gray-500 text-base my-2">
-            <MapPin className="h-5 mt-[0.5px]" /> {propertyData.address},{" "}
-            {propertyData.city}
+            <div className="flex items-center">
+              <MapPin className="hidden sm:flex sm:h-4" />{" "}
+              {propertyData.address}, {propertyData.city}
+            </div>
           </p>
           <div className="flex justify-between items-center">
             <span className="text-lg font-semibold bg-amber-300 p-1 rounded-md my-2 inline-block">
@@ -105,11 +107,13 @@ export const PropertyCard: React.FC<PropertyCardProps> = ({ propertyData }) => {
 
         <div className="flex justify-between items-center py-3">
           <div className="flex items-center gap-4">
-            <span className="inline-flex items-center bg-amber-300 px-3 py-1 rounded-full text-[16px] font-medium gap-1">
-              <BedDouble className="h-6" /> {propertyData.bedroomNumber} bedroom
+            <span className="inline-flex items-center bg-amber-300 px-3 py-1 rounded-full text-xs  sm:text-[16px] font-medium gap-1">
+              <BedDouble className="h-5 sm:h-6" /> {propertyData.bedroomNumber}{" "}
+              bedroom
             </span>
-            <span className="inline-flex items-center bg-amber-300 px-3 py-1 rounded-full text-[16px] font-medium gap-1">
-              <Bath className="h-6" /> {propertyData.bathroomNumber} bathroom
+            <span className="inline-flex items-center bg-amber-300 px-3 py-1 rounded-full text-xs  sm:text-[16px] font-medium gap-1">
+              <Bath className="h-5 sm:h-6" /> {propertyData.bathroomNumber}{" "}
+              bathroom
             </span>
           </div>
 
