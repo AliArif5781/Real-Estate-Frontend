@@ -112,7 +112,7 @@ export const HeroSection = () => {
                         : "border-gray-300 focus:ring-[#60463b]"
                     }`}
                     value={city}
-                    onChange={(e) => setCity(e.target.value)}
+                    onChange={(e) => setCity(e.target.value.trim())}
                   />
                 </div>
                 <div>
