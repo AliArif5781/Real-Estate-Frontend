@@ -3,7 +3,7 @@ import { useLocation } from "react-router-dom";
 import { PropertyCard } from "../components/PropertyCard";
 import { useAppDispatch, useAppSelector } from "../app/hook";
 import { searchProperties } from "../features/property/PropertySlice";
-import { Loader } from "../components/Loader";
+import { PropertyCardSkeleton } from "../components/skeleton/PropertyCardSkeleton";
 export const MainPage = () => {
   const location = useLocation();
   const dispatch = useAppDispatch();
@@ -56,10 +56,12 @@ export const MainPage = () => {
         </h3>
 
         {/* Search Results */}
-        <div className="space-y-6 overflow-y-auto max-h-[500px] mt-4">
+        <div className="space-y-6 overflow-y-auto  mt-4">
           {loading ? (
-            <div className="flex justify-center py-10">
-              <Loader />
+            <div className="space-y-6">
+              {[...Array(3)].map((_, index) => (
+                <PropertyCardSkeleton key={`skeleton-${index}`} />
+              ))}
             </div>
           ) : searchResults.length === 0 ? (
             <div className="text-center py-10 text-gray-500">
@@ -74,7 +76,7 @@ export const MainPage = () => {
       </div>
 
       {/* Right Image Column - Only visible on larger screens */}
-      <div className="lg:col-span-4 hidden lg:flex items-center justify-center p-4 sm:p-8 bg-light-pink mx-2 sm:mx-5">
+      <div className="lg:col-span-4 hidden lg:flex items-center justify-center p-4 sm:p-8 mx-2 sm:mx-5">
         <div className="rounded-lg overflow-hidden w-full max-w-md">
           <img
             src="/bg.png"
