@@ -83,7 +83,11 @@ export const PropertyCard: React.FC<PropertyCardProps> = ({ propertyData }) => {
           </p>
           <div className="flex justify-between items-center">
             <span className="text-lg font-semibold bg-amber-300 p-1 rounded-md my-2 inline-block">
-              ${propertyData.price.toLocaleString()}
+              {propertyData.price.toLocaleString("en-pk", {
+                currency: "PKR",
+                style: "currency",
+                maximumFractionDigits: 0,
+              })}
             </span>
             <span
               className={`${
