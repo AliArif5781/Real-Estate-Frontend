@@ -18,7 +18,6 @@ import { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../app/hook";
 import { useParams } from "react-router-dom";
 import { fetchPropertyDetails } from "../features/property/SearchPropertySlice";
-import { Loader } from "../components/Loader";
 import userLogo from "/userLogo.png";
 import { PropertyPageListSkeleton } from "../components/skeleton/PropertyPageListSelection";
 
