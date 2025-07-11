@@ -30,7 +30,7 @@ const variantClasses: Record<ButtonVariant, string> = {
 };
 
 export const Button: React.FC<ButtonProps> = ({
-  variant = "lightgray",
+  variant = "lightgray ",
   type = "button",
   isLoading = false,
   disabled = false,
