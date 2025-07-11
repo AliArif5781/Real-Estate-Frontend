@@ -18,7 +18,7 @@ export const Header = () => {
   // Redux hooks
 
   const { data: userData, loading } = useAppSelector((state) => state.userData);
-  // console.log(userData, "userData Header");
+  console.log(userData, "userData Header");
 
   // Mobile menu animation variants
   const mobileMenuVariants = {
