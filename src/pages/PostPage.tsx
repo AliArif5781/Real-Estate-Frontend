@@ -15,7 +15,7 @@ export const PostPage = () => {
   const dispatch = useAppDispatch();
   const formData = useAppSelector((state) => state.post);
   const [loading, setLoading] = useState(false);
-
+  const [errors, setErrors] = useState<Record<string, string>>({});
   const imagePreviews = useMemo(
     () => formData.previewImages,
     [formData.previewImages]
@@ -76,6 +76,18 @@ export const PostPage = () => {
     },
     []
   );
+
+  // const validateForm = () => {
+  //   const newErrors: Record<string, string> = {};
+
+  //   if (!formData.city) newErrors.city = "City is required";
+  //   if (!formData.price) newErrors.price = "Price is required";
+  //   if (!formData.title) newErrors.title = "Title is required";
+  //   if (!formData.address) newErrors.address = "Address is required";
+
+  //   setErrors(newErrors);
+  //   return Object.keys(newErrors).length === 0;
+  // };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -143,6 +155,7 @@ export const PostPage = () => {
         error.response?.data?.message ||
         error.message ||
         "Failed to create post";
+      console.log(error.response?.data?.message, "error -==============");
       toast.error(errorMessage);
 
       // Optional: Rollback image uploads if post fails
@@ -193,6 +206,7 @@ export const PostPage = () => {
               type="number"
               id="price"
               name="price"
+              min="0"
               value={formData.price}
               onChange={handleInputChange}
               className="w-full px-3 py-2 md:px-4 md:py-3 border outline-none rounded-lg"
