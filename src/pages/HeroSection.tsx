@@ -48,7 +48,6 @@ export const HeroSection = () => {
   };
 
   const handleSearch = async () => {
-    setIsloading(true);
     setErrors({
       city: "",
       minPrice: "",
@@ -57,8 +56,10 @@ export const HeroSection = () => {
     });
 
     if (!validateInputs()) {
+      return;
     }
 
+    setIsloading(true);
     try {
       await dispatch(searchProperties({ city, minPrice, maxPrice }));
       navigate("/mainPage", {
@@ -150,13 +151,14 @@ export const HeroSection = () => {
                   />
                 </div>
                 <Button
-                  className={` ${
+                  className={`${
                     isLoading
                       ? "opacity-50 cursor-not-allowed"
                       : "bg-light-brown hover:bg-light-brown-100 p-2 sm:p-3 rounded-md text-white flex items-center justify-center transition-colors"
                   }`}
                   aria-label="Search properties"
                   onClick={handleSearch}
+                  disabled={isLoading}
                 >
                   {isLoading ? <Loader /> : <Search size={18} />}
                 </Button>
