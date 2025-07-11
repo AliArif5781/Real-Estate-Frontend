@@ -15,7 +15,7 @@ export const PostPage = () => {
   const dispatch = useAppDispatch();
   const formData = useAppSelector((state) => state.post);
   const [loading, setLoading] = useState(false);
-  const [errors, setErrors] = useState<Record<string, string>>({});
+  // const [errors, setErrors] = useState<Record<string, string>>({});
   const imagePreviews = useMemo(
     () => formData.previewImages,
     [formData.previewImages]
