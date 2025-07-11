@@ -6,9 +6,11 @@ import { Button } from "../components/Button";
 import { Form } from "../components/Form";
 import image1 from "/image1.webp";
 import { login } from "../services/authControllers";
-
+import { useAppDispatch } from "../app/hook";
+import { getUserData } from "../features/property/UserData";
 export const Login = () => {
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
   const [isLoading, setIsloading] = useState<boolean>(false);
   const [formData, setFormData] = useState({
     email: "",
@@ -20,6 +22,7 @@ export const Login = () => {
     setIsloading(true);
     try {
       await login(formData.email, formData.password);
+      dispatch(getUserData());
       toast.success("Login successful! Please verify your email.", {
         duration: 3000,
       });
