@@ -22,7 +22,11 @@ export const loginUserData = createAsyncThunk(
   "data/login",
   async (_, { rejectWithValue }) => {
     try {
-      const response = await api.post("/", {}, { withCredentials: true });
+      const response = await api.post(
+        "/",
+        { email: String, password: String },
+        { withCredentials: true }
+      );
       if (!response.data.success) {
         throw new Error(response.data.message || "Login Failed");
       }
