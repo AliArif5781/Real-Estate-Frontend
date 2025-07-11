@@ -6,11 +6,14 @@ import { searchProperties } from "../features/property/PropertySlice";
 import { useAppDispatch } from "../app/hook";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
+import { Button } from "../components/Button";
+import { Loader } from "../components/Loader";
 
 export const HeroSection = () => {
   const [city, setCity] = useState<string>("");
   const [minPrice, setMinPrice] = useState<number | undefined>(undefined);
   const [maxPrice, setMaxPrice] = useState<number | undefined>(undefined);
+  const [isLoading, setIsloading] = useState<boolean>(false);
   const [errors, setErrors] = useState({
     city: "",
     minPrice: "",
@@ -29,13 +32,11 @@ export const HeroSection = () => {
       general: "",
     };
 
-    // Check if all fields are empty
     if (!city && !minPrice && !maxPrice) {
       newErrors.general = "Please fill at least one search field";
       isValid = false;
     }
 
-    // Validate price range if both are provided
     if (minPrice && maxPrice && minPrice > maxPrice) {
       newErrors.minPrice = "Min price cannot be greater than max price";
       newErrors.maxPrice = "Max price cannot be less than min price";
@@ -47,6 +48,7 @@ export const HeroSection = () => {
   };
 
   const handleSearch = async () => {
+    setIsloading(true);
     setErrors({
       city: "",
       minPrice: "",
@@ -55,12 +57,10 @@ export const HeroSection = () => {
     });
 
     if (!validateInputs()) {
-      return; // Stop if validation fails
     }
 
     try {
       await dispatch(searchProperties({ city, minPrice, maxPrice }));
-      // console.log(data, "data");
       navigate("/mainPage", {
         state: {
           searchParams: { city, minPrice, maxPrice },
@@ -68,36 +68,34 @@ export const HeroSection = () => {
       });
     } catch (error: any) {
       toast.error(error.message || "Search Failed");
+    } finally {
+      setIsloading(false);
     }
   };
+
   return (
     <div className="min-h-screen grid grid-cols-1 lg:grid-cols-12 max-w-[1200px] mx-auto px-4 sm:px-6">
       {/* Left Content Column */}
       <div className="lg:col-span-6 flex items-center py-8 lg:py-0">
         <div className="w-full">
-          <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-black mb-6">
+          <h1 className="text-3xl md:text-5xl font-bold text-black">
             Unlock the Door to
-            <span className="block mt-2">Your Dream Home</span>
+            <span className="block mt-3">Your Dream Home</span>
           </h1>
 
-          <div className="max-w-full prose prose-sm sm:prose-base text-gray-600 mb-8">
+          <div className=" prose prose-sm sm:prose-base text-gray-600 py-8 mx-[5px] ">
             <p>
               Discover your dream property in Lahore's most sought-after
               neighborhoods. Our curated listings feature luxury homes, modern
-              apartments, and prime commercial spaces, all with verified details
-              and high-quality visuals. With personalized service and expert
-              market insights, we make buying, selling, or renting seamless.
+              apartments,all with verified details and high-quality visuals.
             </p>
           </div>
 
-          <div className="bg-white shadow-md rounded-lg overflow-hidden mb-8">
+          <div className="bg-white shadow-md rounded-lg overflow-hidden">
             <div className="flex w-full">
-              <button className="flex-1 px-4 py-3 text-sm sm:text-base font-medium text-white bg-black hover:bg-gray-800 transition-colors">
+              <div className="flex-1 px-4 py-3 text-sm text-center sm:text-base font-medium text-white bg-black ">
                 Buy
-              </button>
-              {/* <button className="flex-1 px-4 py-3 text-sm sm:text-base font-medium text-black bg-gray-100 hover:bg-gray-200 transition-colors">
-                Rent
-              </button> */}
+              </div>
             </div>
 
             <div className="p-4 sm:p-6">
@@ -124,6 +122,7 @@ export const HeroSection = () => {
                         ? "border-red-500 focus:ring-red-300"
                         : "border-gray-300 focus:ring-[#60463b]"
                     }`}
+                    min="0"
                     value={minPrice || ""}
                     onChange={(e) =>
                       setMinPrice(
@@ -141,6 +140,7 @@ export const HeroSection = () => {
                         ? "border-red-500 focus:ring-red-300"
                         : "border-gray-300 focus:ring-[#60463b]"
                     }`}
+                    min="0"
                     value={maxPrice || ""}
                     onChange={(e) =>
                       setMaxPrice(
@@ -149,13 +149,17 @@ export const HeroSection = () => {
                     }
                   />
                 </div>
-                <button
-                  className="bg-light-brown hover:bg-light-brown-100 p-2 sm:p-3 rounded-md text-white flex items-center justify-center transition-colors"
+                <Button
+                  className={` ${
+                    isLoading
+                      ? "opacity-50 cursor-not-allowed"
+                      : "bg-light-brown hover:bg-light-brown-100 p-2 sm:p-3 rounded-md text-white flex items-center justify-center transition-colors"
+                  }`}
                   aria-label="Search properties"
                   onClick={handleSearch}
                 >
-                  <Search size={18} />
-                </button>
+                  {isLoading ? <Loader /> : <Search size={18} />}
+                </Button>
               </div>
               {/* Error messages */}
               {errors.city && (
@@ -192,7 +196,7 @@ export const HeroSection = () => {
       </div>
 
       {/* Right Image Column */}
-      <div className="lg:col-span-6 flex items-center justify-center p-4 sm:p-8 bg-light-pink mx-2 sm:mx-5">
+      <div className=" hidden md:flex lg:col-span-6  items-center justify-center p-4 sm:p-8 mx-2 sm:mx-5">
         <div className="rounded-lg overflow-hidden w-full max-w-md">
           <img
             src={bgImage}
