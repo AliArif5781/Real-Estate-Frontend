@@ -9,7 +9,7 @@ import { UserProfile } from "../pages/UserProfile";
 import { MainPage } from "../pages/MainPage";
 import { PostPage } from "../pages/PostPage";
 import { PropertyPageList } from "../pages/PropertyPageList";
-// import { UProtectedRoute } from "../components/ProtectedRoute";
+
 export const router = createBrowserRouter([
   {
     path: "",
