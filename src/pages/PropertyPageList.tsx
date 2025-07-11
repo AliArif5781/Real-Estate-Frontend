@@ -20,6 +20,7 @@ import { useParams } from "react-router-dom";
 import { fetchPropertyDetails } from "../features/property/SearchPropertySlice";
 import { Loader } from "../components/Loader";
 import userLogo from "/userLogo.png";
+import { PropertyPageListSkeleton } from "../components/skeleton/PropertyPageListSelection";
 
 // interface Property {
 //   images: string[];
@@ -71,7 +72,7 @@ export const PropertyPageList = () => {
     }
   }, [id, dispatch]);
 
-  if (loading) return <Loader />;
+  if (loading) return <PropertyPageListSkeleton />;
   if (error) return <div>Error: {error}</div>;
   if (!currentProperty) return <div>Property not found</div>;
 
@@ -166,12 +167,6 @@ export const PropertyPageList = () => {
               </span>
               <span className="bg-amber-100 text-amber-800 px-3 py-1 rounded-full text-sm font-medium">
                 Apartment
-              </span>
-            </div>
-            <div className="flex w-full gap-5 mt-2">
-              <span className="bg-gray-200 text-black px-3 py-1 rounded-full text-sm font-medium">
-                <span className="font-bold">100%</span>{" "}
-                <span className="">Interest-Free</span>
               </span>
             </div>
           </div>
