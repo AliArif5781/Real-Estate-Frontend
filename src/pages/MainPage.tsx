@@ -23,19 +23,8 @@ export const MainPage = () => {
     maxPrice: initialSearchParams.maxPrice || "",
     bedroom: "",
   });
-  console.log(setSearchInputs);
-  // Handle search form changes
-  // const handleInputChange = (
-  //   e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
-  // ) => {
-  //   const { name, value } = e.target;
-  //   setSearchInputs((prev) => ({
-  //     ...prev,
-  //     [name]: value,
-  //   }));
-  // };
+  // console.log(setSearchInputs);
 
-  // Load initial search results if coming from HeroSection
   useEffect(() => {
     if (
       initialSearchParams.city ||
