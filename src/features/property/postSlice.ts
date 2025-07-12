@@ -1,6 +1,12 @@
 import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
 
+interface User {
+  _id?: string;
+  firstName?: "";
+  lastName?: "";
+  email?: "";
+}
 export interface FormData {
   _id: string;
   title: string;
@@ -31,6 +37,7 @@ export interface FormData {
   Hospital: string;
   Garden: string;
   Gym: string;
+  user: User;
 }
 
 const initialState: FormData = {
@@ -62,6 +69,10 @@ const initialState: FormData = {
   Hospital: "",
   Garden: "",
   Gym: "",
+  user: {
+    firstName: "",
+    lastName: "",
+  },
 };
 
 export const postSlice = createSlice({
