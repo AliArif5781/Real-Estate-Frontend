@@ -178,7 +178,7 @@ export const HeroSection = () => {
               )}
             </div>
           </div>
-          <div className="stats-card_container">
+          <div className="stats-card_container mt-5">
             <div className="stats-card">
               <h3 className="stats-card__value">16+</h3>
               <span className="stats-card__label">Years of Experience</span>
