@@ -20,6 +20,7 @@ import { useParams } from "react-router-dom";
 import { fetchPropertyDetails } from "../features/property/SearchPropertySlice";
 import userLogo from "/userLogo.png";
 import { PropertyPageListSkeleton } from "../components/skeleton/PropertyPageListSelection";
+import { PropertyCard } from "../components/PropertyCard";
 
 // interface Property {
 //   images: string[];
@@ -179,7 +180,18 @@ export const PropertyPageList = () => {
                 />
               </div>
               <span className="font-medium text-gray-700">
-                {userData.data?.firstName.toLocaleUpperCase()}
+                <div className="creator-info">
+                  {currentProperty?.user && (
+                    <>
+                      <p>
+                        Posted by:{" "}
+                        {currentProperty.user.firstName || "Anonymous"}{" "}
+                        {currentProperty.user.lastName}
+                      </p>
+                      <p>Contact: {currentProperty.user.email}</p>
+                    </>
+                  )}
+                </div>
               </span>
             </div>
           </div>
