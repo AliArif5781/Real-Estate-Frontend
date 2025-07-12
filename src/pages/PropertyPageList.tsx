@@ -20,7 +20,6 @@ import { useParams } from "react-router-dom";
 import { fetchPropertyDetails } from "../features/property/SearchPropertySlice";
 import userLogo from "/userLogo.png";
 import { PropertyPageListSkeleton } from "../components/skeleton/PropertyPageListSelection";
-import { PropertyCard } from "../components/PropertyCard";
 
 // interface Property {
 //   images: string[];
@@ -64,7 +63,7 @@ export const PropertyPageList = () => {
     );
   };
 
-  const userData = useAppSelector((state) => state.userData);
+  // const userData = useAppSelector((state) => state.userData);
   // console.log(userData);
   useEffect(() => {
     if (id) {
