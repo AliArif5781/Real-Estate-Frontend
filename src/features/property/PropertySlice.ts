@@ -26,6 +26,7 @@ interface Property {
   LoadShedding: string;
   Water: string;
   Gas: string;
+  user?: string;
 }
 
 interface PropertyState {
