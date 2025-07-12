@@ -30,6 +30,7 @@ export const getUserData = createAsyncThunk(
       if (!response.data.userData) {
         throw new Error("User data not found in response");
       }
+      console.log(response, "response userData");
       return response.data.userData; // Make sure this matches your backend response
     } catch (error: any) {
       return rejectWithValue(
