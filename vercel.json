@@ -1,6 +1,10 @@
 {
   "rewrites": [
     {
+      "source": "/api/(.*)",
+      "destination": "https://real-estate-backend-five-omega.vercel.app"
+    },
+    {
       "source": "/(.*)",
       "destination": "/index.html"
     }
