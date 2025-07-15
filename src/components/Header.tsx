@@ -7,7 +7,7 @@ import toast from "react-hot-toast";
 import { useAppDispatch, useAppSelector } from "../app/hook";
 import { logoutUser } from "../features/property/LogoutUser/logoutUser";
 // import { Skeleton } from "@/components/ui/skeleton"; // Replace with your skeleton component
-
+import logo from "/logo1.png";
 export const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isUserDropdownOpen, setIsUserDropdownOpen] = useState<boolean>(false);
@@ -96,22 +96,9 @@ export const Header = () => {
           {/* Logo Section */}
           <Link to={"/"}>
             <div className="flex items-center space-x-2">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-8 w-8 text-indigo-600"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M13 10V3L4 14h7v7l9-11h-7z"
-                />
-              </svg>
+              <img src={logo} alt="" className="sm:h-[3.5rem] h-[3.1rem]" />
               <span className="text-2xl font-bold text-gray-800">
-                BrandName
+                GreenVille
               </span>
             </div>
           </Link>
@@ -122,9 +109,7 @@ export const Header = () => {
               to="/"
               className={({ isActive }) =>
                 `relative py-2 px-1 text-gray-700 font-medium transition-all duration-300 ${
-                  isActive
-                    ? "text-indigo-600 font-semibold"
-                    : "hover:text-indigo-600"
+                  isActive ? "text-black font-semibold" : "hover:text-black"
                 }`
               }
               end
@@ -134,7 +119,7 @@ export const Header = () => {
                   Home
                   {isActive && (
                     <motion.span
-                      className="absolute bottom-0 left-0 w-full h-0.5 bg-indigo-600"
+                      className="absolute bottom-0 left-0 w-full h-0.5 bg-black"
                       layoutId="desktopActiveIndicator"
                       transition={{
                         type: "spring",
@@ -151,9 +136,7 @@ export const Header = () => {
               to="/about"
               className={({ isActive }) =>
                 `relative py-2 px-1 text-gray-700 font-medium transition-all duration-300 ${
-                  isActive
-                    ? "text-indigo-600 font-semibold"
-                    : "hover:text-indigo-600"
+                  isActive ? "text-black font-semibold" : "hover:text-black"
                 }`
               }
             >
@@ -162,7 +145,7 @@ export const Header = () => {
                   About
                   {isActive && (
                     <motion.span
-                      className="absolute bottom-0 left-0 w-full h-0.5 bg-indigo-600"
+                      className="absolute bottom-0 left-0 w-full h-0.5 bg-black"
                       layoutId="desktopActiveIndicator"
                       transition={{
                         type: "spring",
@@ -349,8 +332,8 @@ export const Header = () => {
                     className={({ isActive }) =>
                       `block py-3 px-4 rounded-lg transition-all duration-300 ${
                         isActive
-                          ? "text-indigo-600 font-semibold bg-indigo-50"
-                          : "text-gray-700 hover:text-indigo-600 hover:bg-indigo-50"
+                          ? "text-black font-semibold bg-gray-200"
+                          : "text-gray-700 hover:text-black hover:bg-gray-200"
                       }`
                     }
                     onClick={() => setIsMenuOpen(false)}
@@ -366,8 +349,8 @@ export const Header = () => {
                     className={({ isActive }) =>
                       `block py-3 px-4 rounded-lg transition-all duration-300 ${
                         isActive
-                          ? "text-indigo-600 font-semibold bg-indigo-50"
-                          : "text-gray-700 hover:text-indigo-600 hover:bg-indigo-50"
+                          ? "text-black font-semibold bg-gray-200"
+                          : "text-gray-700 hover:text-black hover:bg-gray-200"
                       }`
                     }
                     onClick={() => setIsMenuOpen(false)}
@@ -378,17 +361,17 @@ export const Header = () => {
 
                 <motion.div variants={navItemVariants}>
                   <NavLink
-                    to="/contact"
+                    to="/postPage"
                     className={({ isActive }) =>
                       `block py-3 px-4 rounded-lg transition-all duration-300 ${
                         isActive
-                          ? "text-indigo-600 font-semibold bg-indigo-50"
-                          : "text-gray-700 hover:text-indigo-600 hover:bg-indigo-50"
+                          ? "text-black font-semibold bg-gray-200"
+                          : "text-gray-700 hover:text-black hover:bg-gray-200"
                       }`
                     }
                     onClick={() => setIsMenuOpen(false)}
                   >
-                    Contact Us
+                    Create Post
                   </NavLink>
                 </motion.div>
 
@@ -398,8 +381,8 @@ export const Header = () => {
                     className={({ isActive }) =>
                       `block py-3 px-4 rounded-lg transition-all duration-300 ${
                         isActive
-                          ? "text-indigo-600 font-semibold bg-indigo-50"
-                          : "text-gray-700 hover:text-indigo-600 hover:bg-indigo-50"
+                          ? "text-black font-semibold bg-gray-200"
+                          : "text-gray-700 hover:text-black hover:bg-gray-200"
                       }`
                     }
                     onClick={() => setIsMenuOpen(false)}
