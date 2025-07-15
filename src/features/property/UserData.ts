@@ -6,6 +6,8 @@ export interface userState {
   lastName: string;
   isAccountVerified: boolean;
   email: string;
+  userId?: string;
+  createdAt?: string;
 }
 
 interface userStateData {
@@ -30,7 +32,7 @@ export const getUserData = createAsyncThunk(
       if (!response.data.userData) {
         throw new Error("User data not found in response");
       }
-      console.log(response, "response userData");
+      console.log(response.data.userData, "response userData");
       return response.data.userData; // Make sure this matches your backend response
     } catch (error: any) {
       return rejectWithValue(
@@ -66,13 +68,13 @@ export const UserDataSlice = createSlice({
         // console.log("User data fetched:", action.payload); // Add logging
         state.loading = false;
         state.data = action.payload;
-        // state.initialized = true;
+        state.initialized = true;
       })
       .addCase(getUserData.rejected, (state, action) => {
         // console.error("User data fetch failed:", action.payload); // Add logging
         state.loading = false;
         state.error = action.payload as string;
-        // state.initialized = true;
+        state.initialized = true;
         // state.data = null;
       });
   },
