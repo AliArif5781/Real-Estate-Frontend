@@ -30,22 +30,22 @@ export const signup = async (
   }
 };
 
-export const login = async (email: string, password: string) => {
-  try {
-    const response = await api.post(
-      "/login",
-      { email, password },
-      { withCredentials: true }
-    );
-    if (!response.data.success) {
-      throw new Error(response.data.message || "Login Failed");
-    }
-    console.log(response.data, "login response authControllers");
-    return response.data.userData;
-  } catch (error: any) {
-    if (error.response.data.message) {
-      throw new Error(error.response.data.message);
-    }
-    throw new Error("Login Failed");
-  }
-};
+// export const login = async (email: string, password: string) => {
+//   try {
+//     const response = await api.post(
+//       "/login",
+//       { email, password },
+//       { withCredentials: true }
+//     );
+//     if (!response.data.success) {
+//       throw new Error(response.data.message || "Login Failed");
+//     }
+//     console.log(response.data, "login response authControllers");
+//     return response.data.userData;
+//   } catch (error: any) {
+//     if (error.response.data.message) {
+//       throw new Error(error.response.data.message);
+//     }
+//     throw new Error("Login Failed");
+//   }
+// };
