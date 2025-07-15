@@ -5,7 +5,6 @@ import { useAppDispatch } from "../app/hook";
 import { fetchPropertyDetails } from "../features/property/SearchPropertySlice";
 import toast from "react-hot-toast";
 
-// Updated Property interface to match backend data
 export interface Property {
   _id: string;
   title: string;
@@ -23,16 +22,17 @@ export interface Property {
   petPolicy: string;
   Kitchen: number;
   totalSize: number;
-  school: number; // Changed from string to number
+  school: number;
   images: string[];
   previewImages: string[];
   createdAt?: string;
-  BusStop?: number; // Changed from string to number
-  Resturant?: number; // Changed from string to number
-  LoadShedding?: string; // Added missing fields
+  BusStop?: number;
+  Resturant?: number;
+  LoadShedding?: string;
   Water?: string;
   Gas?: string;
   Best?: string;
+  sold?: string;
 }
 
 interface PropertyCardProps {
@@ -42,12 +42,16 @@ interface PropertyCardProps {
 export const PropertyCard: React.FC<PropertyCardProps> = ({ propertyData }) => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+
   if (!propertyData) {
     return <div>No properties found</div>;
   }
 
+  const isSold = propertyData?.sold === "yes";
+
   const handleClick = async () => {
-    // Preload data before navigation
+    if (propertyData?.sold) return; // Don't navigate if property is sold
+
     try {
       await dispatch(fetchPropertyDetails(propertyData._id));
       navigate(`/property/${propertyData._id}`);
@@ -57,12 +61,23 @@ export const PropertyCard: React.FC<PropertyCardProps> = ({ propertyData }) => {
       });
     }
   };
+
   return (
     <div
-      className="grid grid-cols-1 sm:grid-cols-12 gap-4 my-10"
-      // onClick={() => navigate(`/property/${propertyData._id}`)}
+      className={`grid grid-cols-1 sm:grid-cols-12 gap-4 my-10 relative ${
+        isSold ? "opacity-60 cursor-not-allowed" : "cursor-pointer"
+      }`}
       onClick={handleClick}
     >
+      {/* Sold overlay */}
+      {isSold && (
+        <div className=" text-sm absolute inset-0 bg-gray-300 bg-opacity-30 z-10 rounded-lg flex items-start justify-start">
+          <span className="bg-[#dd0426] text-white px-2 py-[1px] m-2 rounded-md">
+            Sold
+          </span>
+        </div>
+      )}
+
       <div className="sm:col-span-5 bg-gray-200 rounded-lg overflow-hidden">
         <img
           src={propertyData.images[0]}
@@ -75,12 +90,12 @@ export const PropertyCard: React.FC<PropertyCardProps> = ({ propertyData }) => {
       <div className="sm:col-span-7 bg-gray-100 px-4 rounded-lg flex flex-col h-full">
         <div className="flex-grow">
           <h3 className="text-xl font-medium">{propertyData.title}</h3>
-          <p className="flex text-gray-500 text-base my-2">
+          <div className="flex text-gray-500 text-base my-2">
             <div className="flex items-center">
               <MapPin className="hidden sm:flex sm:h-4" />{" "}
               {propertyData.address}, {propertyData.city}
             </div>
-          </p>
+          </div>
           <div className="flex justify-between items-center">
             <span className="text-lg font-semibold bg-amber-300 p-1 rounded-md my-2 inline-block">
               {propertyData.price.toLocaleString("en-pk", {
@@ -111,18 +126,18 @@ export const PropertyCard: React.FC<PropertyCardProps> = ({ propertyData }) => {
 
         <div className="flex justify-between items-center py-3">
           <div className="flex items-center gap-4">
-            <span className="inline-flex items-center bg-amber-300 px-3 py-1 rounded-full text-xs  sm:text-[16px] font-medium gap-1">
+            <span className="inline-flex items-center bg-amber-300 px-3 py-1 rounded-full text-xs sm:text-[16px] font-medium gap-1">
               <BedDouble className="h-5 sm:h-6" /> {propertyData.bedroomNumber}{" "}
               bedroom
             </span>
-            <span className="inline-flex items-center bg-amber-300 px-3 py-1 rounded-full text-xs  sm:text-[16px] font-medium gap-1">
+            <span className="inline-flex items-center bg-amber-300 px-3 py-1 rounded-full text-xs sm:text-[16px] font-medium gap-1">
               <Bath className="h-5 sm:h-6" /> {propertyData.bathroomNumber}{" "}
               bathroom
             </span>
           </div>
 
-          <button className="text-gray-500 transition-colors">
-            <Bookmark className="h-5 w-5" />{" "}
+          <button className="text-gray-500 transition-colors" disabled={isSold}>
+            <Bookmark className="h-5 w-5" />
           </button>
         </div>
       </div>
