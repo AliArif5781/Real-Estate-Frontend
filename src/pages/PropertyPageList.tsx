@@ -88,6 +88,7 @@ export const PropertyPageList = () => {
               src={currentProperty.images[0]}
               alt={currentProperty.title}
               className="w-full h-full max-h-auto md:max-h-[28rem] object-cover rounded-lg"
+              loading="lazy"
             />
           </div>
           <div className="grid grid-cols-3 md:grid-cols-1 md:col-span-4 gap-3 md:gap-4 mt-3 md:mt-0 h-full items-center overflow-y-auto">
@@ -101,6 +102,7 @@ export const PropertyPageList = () => {
                   src={imageUrl}
                   alt={`${currentProperty.title} thumbnail ${index + 1}`}
                   className="w-[15rem] h-20 md:h-[7.5rem] object-cover rounded-lg"
+                  loading="lazy"
                 />
               </div>
             ))}
