@@ -198,7 +198,7 @@ export const HeroSection = () => {
       </div>
 
       {/* Right Image Column */}
-      <div className=" hidden md:flex lg:col-span-6  items-center justify-center p-4 sm:p-8 mx-2 sm:mx-5">
+      <div className=" hidden lg:flex lg:col-span-6  items-center justify-center p-4 sm:p-8 mx-2 sm:mx-5">
         <div className="rounded-lg overflow-hidden w-full max-w-md">
           <img
             src={bgImage}
