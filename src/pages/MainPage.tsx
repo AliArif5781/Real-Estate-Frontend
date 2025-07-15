@@ -61,11 +61,35 @@ export const MainPage = () => {
               <PropertyCard key={property._id} propertyData={property} />
             ))
           )}
+          {/*  */}
+          <div className="pt-[3rem] lg:pt-[7rem]">
+            <p>
+              {searchInputs.city} real estate market offers excellent investment
+              opportunities due to its beautiful surroundings, modern
+              infrastructure, and high standard of living.{" "}
+              {searchInputs.city === "Islamabad"
+                ? `As Pakistan's
+              well-planned capital, the city attracts buyers looking for both
+              residential and commercial properties`
+                : ""}
+              , from luxurious houses in developed sectors like F, E and A to
+              more affordable plots in upcoming societies. Major developments
+              like the Metro Bus and New
+              {searchInputs.city} International Airport have further boosted
+              property values, making investments here more profitable. Whether
+              you're looking for a family home, rental apartment, or business
+              space, our platform helps you find verified listings with
+              transparent pricing. With high demand from locals and overseas
+              Pakistanis, investing in {searchInputs.city} ensures security and
+              strong returns. Explore our easy-to-use website to discover the
+              best properties that match your budget and needs.
+            </p>
+          </div>
         </div>
       </div>
 
       {/* Right Image Column - Only visible on larger screens */}
-      <div className="lg:col-span-4 hidden lg:flex items-center justify-center p-4 sm:p-8 mx-2 sm:mx-5">
+      {/* <div className="lg:col-span-4 hidden lg:flex items-center justify-center p-4 sm:p-8 mx-2 sm:mx-5">
         <div className="rounded-lg overflow-hidden w-full max-w-md">
           <img
             src="/bg.png"
@@ -76,7 +100,7 @@ export const MainPage = () => {
             height={400}
           />
         </div>
-      </div>
+      </div> */}
     </div>
   );
 };
