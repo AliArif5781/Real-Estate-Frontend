@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import toast from "react-hot-toast";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Loader } from "../components/Loader";
 import { Button } from "../components/Button";
 import { Form } from "../components/Form";
