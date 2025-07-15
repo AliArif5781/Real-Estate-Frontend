@@ -4,6 +4,7 @@ import { api } from "../../api/api";
 export interface LoginState {
   email: string;
   password: string;
+  userId?: string;
 }
 
 interface userloginState {
@@ -20,18 +21,22 @@ const initialState: userloginState = {
 
 export const loginUserData = createAsyncThunk(
   "data/login",
-  async (_, { rejectWithValue }) => {
+  async (loginData: LoginState, { rejectWithValue }) => {
     try {
       const response = await api.post(
-        "/",
-        { email: String, password: String },
+        "/login",
+        {
+          email: loginData.email,
+          password: loginData.password,
+          userId: loginData.userId,
+        },
         { withCredentials: true }
       );
       if (!response.data.success) {
         throw new Error(response.data.message || "Login Failed");
       }
-      console.log(response.data, "login response");
-      return response.data;
+      console.log(response.data.userData, "login response");
+      return response.data.userData;
     } catch (error: any) {
       return rejectWithValue(error.response.data.message || "Login Failed");
     }
@@ -50,11 +55,12 @@ export const userData = createSlice({
       })
       .addCase(loginUserData.fulfilled, (state, action) => {
         state.userData = action.payload;
-        state.error = null;
-      })
-      .addCase(loginUserData.rejected, (state) => {
         state.loading = false;
         state.error = null;
+      })
+      .addCase(loginUserData.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload as string;
       });
   },
 });
