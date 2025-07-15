@@ -9,11 +9,16 @@ import { UserProfile } from "../pages/UserProfile";
 import { MainPage } from "../pages/MainPage";
 import { PostPage } from "../pages/PostPage";
 import { PropertyPageList } from "../pages/PropertyPageList";
+import ProtectedRoute from "../pages/ProtectedRoute";
 
 export const router = createBrowserRouter([
   {
     path: "",
-    element: <Layout />,
+    element: (
+      <ProtectedRoute>
+        <Layout />
+      </ProtectedRoute>
+    ),
     children: [
       {
         path: "/",
@@ -26,6 +31,10 @@ export const router = createBrowserRouter([
       {
         path: "mainPage",
         element: <MainPage />,
+      },
+      {
+        path: "userProfile",
+        element: <UserProfile />,
       },
       {
         path: "postPage",
@@ -49,9 +58,5 @@ export const router = createBrowserRouter([
   {
     path: "*",
     element: <PageNotFound />,
-  },
-  {
-    path: "/userProfile",
-    element: <UserProfile />,
   },
 ]);
