@@ -38,6 +38,7 @@ export interface FormData {
   Garden: string;
   Gym: string;
   user: User;
+  // sold: string;
 }
 
 const initialState: FormData = {
@@ -69,6 +70,7 @@ const initialState: FormData = {
   Hospital: "",
   Garden: "",
   Gym: "",
+  // sold: "",
   user: {
     firstName: "",
     lastName: "",
