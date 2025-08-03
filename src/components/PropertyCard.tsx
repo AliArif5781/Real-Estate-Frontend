@@ -33,6 +33,9 @@ export interface Property {
   Gas?: string;
   Best?: string;
   sold?: string;
+  soldAt?: string; //
+  status?: string; //
+  isSold?: string;
 }
 
 interface PropertyCardProps {
@@ -50,7 +53,7 @@ export const PropertyCard: React.FC<PropertyCardProps> = ({ propertyData }) => {
   const isSold = propertyData?.sold === "yes";
 
   const handleClick = async () => {
-    if (propertyData?.sold) return; // Don't navigate if property is sold
+    if (propertyData?.isSold) return; // Don't navigate if property is sold
 
     try {
       await dispatch(fetchPropertyDetails(propertyData._id));
@@ -70,8 +73,8 @@ export const PropertyCard: React.FC<PropertyCardProps> = ({ propertyData }) => {
       onClick={handleClick}
     >
       {/* Sold overlay */}
-      {isSold && (
-        <div className=" text-sm absolute inset-0 bg-gray-300 bg-opacity-30 z-10 rounded-lg flex items-start justify-start">
+      {propertyData.isSold && (
+        <div className=" text-sm absolute inset-0 bg-gray-300 bg-opacity-30 z-10 rounded-lg flex items-start justify-start cursor-not-allowed">
           <span className="bg-[#dd0426] text-white px-2 py-[1px] m-2 rounded-md">
             Sold
           </span>
