@@ -6,7 +6,9 @@ type ButtonVariant =
   | "danger"
   | "outline"
   | "ghost"
-  | "lightgray";
+  | "lightgray"
+  | "lightgreen"
+  | "lightred";
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: ButtonVariant;
@@ -27,6 +29,10 @@ const variantClasses: Record<ButtonVariant, string> = {
   ghost: "text-gray-700 hover:bg-gray-100 focus:outline-none focus:border-none",
   lightgray:
     "bg-light-brown text-[#F3F4F1] focus:outline-none focus:border-none",
+  lightred:
+    " bg-red-200 text-red-800  hover:bg-red-300 text-xs rounded-lg font-medium cursor-pointer hover:shadow-md transition-all duration-300",
+  lightgreen:
+    " bg-green-200 text-green-800 hover:bg-green-300 text-xs rounded-lg font-medium cursor-pointer hover:shadow-md transition-all duration-300",
 };
 
 export const Button: React.FC<ButtonProps> = ({
@@ -41,7 +47,7 @@ export const Button: React.FC<ButtonProps> = ({
   ...props
 }) => {
   const baseClasses =
-    "px-4 py-2 rounded-md font-medium transition-colors flex items-center justify-center gap-2";
+    "px-4 py-2 rounded-md font-medium transition-colors flex items-center justify-center gap-2 h-10";
   const variantClass = variantClasses[variant];
   const disabledClass =
     disabled || isLoading ? "opacity-50 cursor-not-allowed" : "";
