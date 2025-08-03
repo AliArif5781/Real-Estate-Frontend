@@ -25,18 +25,28 @@ export const Login = () => {
     e.preventDefault();
     setIsloading(true);
     try {
-      // Fixed: Dispatch the async thunk with formData
       const result = await dispatch(loginUserData(formData));
 
-      // Check if the login was successful
       if (loginUserData.fulfilled.match(result)) {
-        dispatch(getUserData());
-        toast.success("Login successful! Please verify your email.", {
-          duration: 3000,
-        });
-        navigate("/");
+        // Fetch complete user data including role
+        const userResult = await dispatch(getUserData());
+
+        if (getUserData.fulfilled.match(userResult)) {
+          const user = userResult.payload;
+
+          toast.success("Login successful!", { duration: 3000 });
+
+          // Redirect based on role
+          if (user?.role === "admin") {
+            navigate("/dashboard");
+          } else {
+            navigate("/");
+          }
+        } else {
+          toast.error("Failed to fetch user data");
+          navigate("/");
+        }
       } else {
-        // Handle the rejected case
         toast.error((result.payload as string) || "Login failed");
       }
     } catch (error: any) {
@@ -46,7 +56,6 @@ export const Login = () => {
       setIsloading(false);
     }
   };
-
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
