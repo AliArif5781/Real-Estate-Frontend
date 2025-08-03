@@ -2,12 +2,13 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { api } from "../../api/api";
 
 export interface userState {
-  firstName: string;
-  lastName: string;
-  isAccountVerified: boolean;
-  email: string;
+  firstName?: string;
+  lastName?: string;
+  isAccountVerified?: boolean;
+  email?: string;
   userId?: string;
   createdAt?: string;
+  role?: string;
 }
 
 interface userStateData {
@@ -32,7 +33,7 @@ export const getUserData = createAsyncThunk(
       if (!response.data.userData) {
         throw new Error("User data not found in response");
       }
-      console.log(response.data.userData, "response userData");
+      // console.log(response.data.userData, "response userData");
       return response.data.userData; // Make sure this matches your backend response
     } catch (error: any) {
       return rejectWithValue(
