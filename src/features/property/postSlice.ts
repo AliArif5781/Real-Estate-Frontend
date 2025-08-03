@@ -14,7 +14,7 @@ export interface FormData {
   address: string;
   description: string;
   city: string;
-  bedroomNumber: number; //
+  bedroomNumber: number;
   bathroomNumber: number;
   latitude: number;
   longitude: number;
@@ -33,12 +33,12 @@ export interface FormData {
   Water: string;
   Gas: string;
   Best?: string;
-  //
   Hospital: string;
   Garden: string;
   Gym: string;
   user: User;
-  // sold: string;
+  // soldAt?: string; //
+  // status?: string; //
 }
 
 const initialState: FormData = {
