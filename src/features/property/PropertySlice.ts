@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { searchApiPost } from "../../api/api";
 
-interface Property {
+export interface Property {
   _id: string;
   title: string;
   price: number;
@@ -27,6 +27,8 @@ interface Property {
   Water: string;
   Gas: string;
   user?: string;
+  createdAt?: any;
+  updatedAt?: any;
 }
 
 interface PropertyState {
