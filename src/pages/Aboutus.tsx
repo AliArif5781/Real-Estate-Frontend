@@ -1,9 +1,25 @@
+import { useEffect } from "react";
 import bgImage from "/bg.png";
+import { searchApiPost } from "../api/api";
 export const Aboutus = () => {
+  useEffect(() => {
+    const getfunc = async () => {
+      try {
+        const response = await searchApiPost.get(
+          "/api/properties/getAllSoldProperties"
+        );
+        console.log(response.data, "data get all sold data");
+        response.data;
+      } catch (error) {
+        console.log(error, "getfunc");
+      }
+    };
+    getfunc();
+  }, []);
   return (
-    <div className="min-h-screen grid grid-cols-1 lg:grid-cols-12 mx-auto max-w-[1200px] px-4 sm:px-6 lg:px-8 py-12 sm:py-24">
+    <div className="min-h-screen grid grid-cols-1 lg:grid-cols-12 mx-auto max-w-[1200px] px-4 sm:px-6 lg:px-8">
       {/* Text Content */}
-      <div className="lg:col-span-7 flex flex-col justify-center order-2 lg:order-1 mt-10 lg:mt-0 ">
+      <div className="lg:col-span-7 flex justify-center items-center mt-16 ">
         <div className="">
           <h2 className="text-4xl sm:text-5xl font-bold text-gray-900 mb-6">
             <span className="bg-[#1F2937] text-white px-2 [box-decoration-break:clone] [-webkit-box-decoration-break:clone] leading-tight">
@@ -22,7 +38,7 @@ export const Aboutus = () => {
         </div>
       </div>
 
-      <div className="lg:col-span-5 order-1 lg:order-2 flex items-center justify-center">
+      <div className="lg:col-span-5 order-1 lg:order-2 hidden lg:flex items-center justify-center">
         <div className="w-full h-64 sm:h-80 md:h-[30rem] object-cover  rounded-xl overflow-hidden flex items-center justify-center">
           {/* {videoElement} */}
           <img src={bgImage} alt="" />
