@@ -5,6 +5,7 @@ export interface LoginState {
   email: string;
   password: string;
   userId?: string;
+  role?: string;
 }
 
 interface userloginState {
@@ -35,7 +36,8 @@ export const loginUserData = createAsyncThunk(
       if (!response.data.success) {
         throw new Error(response.data.message || "Login Failed");
       }
-      console.log(response.data.userData, "login response");
+
+      // console.log(response.data.userData, "login response");
       return response.data.userData;
     } catch (error: any) {
       return rejectWithValue(error.response.data.message || "Login Failed");
