@@ -19,7 +19,7 @@ export const fetchPropertyDetails = createAsyncThunk(
   async (id: string, { rejectWithValue }) => {
     try {
       const response = await searchApiPost.get(`/api/${id}`);
-      console.log(response.data, "r");
+      // console.log(response.data, "r");
       if (!response.data.success) {
         throw new Error(response.data.message || "Failed to fetch property");
       }
