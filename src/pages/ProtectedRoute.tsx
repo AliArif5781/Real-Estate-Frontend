@@ -1,7 +1,7 @@
 import { Navigate, useLocation } from "react-router-dom";
 import { useAppSelector } from "../app/hook";
 import type React from "react";
-interface Protected {
+export interface Protected {
   children?: React.ReactNode;
 }
 
