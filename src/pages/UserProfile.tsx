@@ -1,7 +1,7 @@
 import { useState } from "react";
 import userLogo from "/userLogo.png";
 import { ChevronRight, X } from "lucide-react";
-import { useNavigate } from "react-router-dom"; // Assuming you're using React Router
+import { useNavigate } from "react-router-dom";
 import { useAppSelector } from "../app/hook";
 
 export const UserProfile = () => {
@@ -9,10 +9,10 @@ export const UserProfile = () => {
   const navigate = useNavigate();
   const { data, loading } = useAppSelector((state) => state.userData);
   const handleBackClick = () => {
-    navigate(-1); // Goes back to previous page
-    // Alternatively use navigate('/') to go to home page
+    navigate(-1);
   };
 
+  // console.log(data, "userProfile");
   return (
     <div className="min-h-screen grid grid-cols-1 md:grid-cols-6 lg:grid-cols-12 max-w-[1200px] w-full mx-auto">
       {/* Left Sidebar - Hidden on mobile when profile is open */}
@@ -80,7 +80,7 @@ export const UserProfile = () => {
               />
               <div className="text-center sm:text-left">
                 <h3 className="font-bold text-lg">
-                  {data ? data.firstName.toUpperCase() : loading}
+                  {data?.firstName} {data?.lastName}
                 </h3>
                 <p className="text-gray-600 text-sm">Member since 2025</p>
               </div>
