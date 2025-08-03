@@ -23,7 +23,7 @@ export const MainPage = () => {
     maxPrice: initialSearchParams.maxPrice || "",
     bedroom: "",
   });
-  console.log(setSearchInputs, "seachinput");
+  // console.log(setSearchInputs, "seachinput");
 
   useEffect(() => {
     if (
@@ -57,7 +57,7 @@ export const MainPage = () => {
               No properties found matching your criteria
             </div>
           ) : (
-            searchResults.map((property) => (
+            searchResults.map((property: any) => (
               <PropertyCard key={property._id} propertyData={property} />
             ))
           )}
