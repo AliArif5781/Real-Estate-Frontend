@@ -20,6 +20,8 @@ import { useParams } from "react-router-dom";
 import { fetchPropertyDetails } from "../features/property/SearchPropertySlice";
 import userLogo from "/userLogo.png";
 import { PropertyPageListSkeleton } from "../components/skeleton/PropertyPageListSelection";
+import { searchApiPost } from "../api/api";
+import toast from "react-hot-toast";
 
 // interface Property {
 //   images: string[];
@@ -35,11 +37,13 @@ export const PropertyPageList = () => {
   const dispatch = useAppDispatch();
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
-
+  const [isOwner, setIsOwner] = useState<boolean>(false);
+  const [Isloading, setIsLoading] = useState<boolean>(false);
   const { currentProperty, loading, error } = useAppSelector(
     (state) => state.clickProperties
   );
 
+  const { data: userData } = useAppSelector((state) => state.userData);
   const openFullscreen = (index: number) => {
     setCurrentImageIndex(index);
     setIsFullscreen(true);
@@ -70,6 +74,44 @@ export const PropertyPageList = () => {
       dispatch(fetchPropertyDetails(id));
     }
   }, [id, dispatch]);
+
+  useEffect(() => {
+    if (userData?.email && currentProperty?.user?.email) {
+      const ownerStatus = userData?.email === currentProperty?.user?.email;
+      setIsOwner(ownerStatus);
+      console.log(ownerStatus ? "User is owner" : "User is not owner");
+    } else {
+      setIsOwner(false);
+    }
+  }, [userData, currentProperty?.user]);
+
+  const handleSoldProperty = async () => {
+    if (!isOwner) return;
+
+    setIsLoading(true);
+    try {
+      const response = await searchApiPost.post(
+        `/api/properties/${currentProperty?._id}/sold`,
+        { status: "sold" }
+      );
+      console.log(response, "response PRoperty");
+      if (response.data?.success) {
+        toast.success(response.data.message);
+        // Update local state if needed
+        return response.data;
+      }
+      throw new Error(response.data?.message || "Operation failed");
+    } catch (error: any) {
+      console.error("Error:", error);
+      toast.error(
+        error.response?.data?.message ||
+          error.message ||
+          "Failed to mark as sold"
+      );
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   if (loading) return <PropertyPageListSkeleton />;
   if (error) return <div>Error: {error}</div>;
@@ -147,7 +189,7 @@ export const PropertyPageList = () => {
         )}
         {/*  */}
         {/* Title Section - Fixed the grid structure */}
-        <div className="w-full grid grid-cols-12 gap-4 p-4 rounded-lg">
+        <div className="w-full grid grid-cols-12 gap-4 pt-4 rounded-lg">
           <div className="col-span-12 md:col-span-6 space-y-5">
             <h3 className="text-3xl font-bold">{currentProperty.title}</h3>
             <div className="text-gray-600 flex items-center">
@@ -171,34 +213,58 @@ export const PropertyPageList = () => {
               </span>
             </div>
           </div>
-          <div className="col-span-6 md:col-span-6 flex items-center justify-end">
+          <div className="col-span-12 md:col-span-6 flex items-center justify-end w-full md:w-auto">
             <div className="flex items-center gap-3 bg-green-100 px-4 py-2 rounded-full">
-              <div className="h-8 w-8 rounded-full  overflow-hidden">
+              <div className="h-8 w-8 rounded-full shrink-0">
                 <img
                   src={userLogo}
                   alt="User Avatar"
                   className="h-full w-full object-cover"
                 />
               </div>
-              <span className="font-medium text-gray-700">
+              <div className="font-medium text-gray-700 text-sm ">
                 <div className="creator-info">
                   {currentProperty?.user && (
                     <>
-                      <p>
-                        Posted by:{" "}
-                        {currentProperty.user.firstName || "Anonymous"}{" "}
-                        {currentProperty.user.lastName}
-                      </p>
-                      <p>Contact: {currentProperty.user.email}</p>
+                      <div className="">
+                        <span>Posted by:</span>{" "}
+                        <span className="font-bold">
+                          {currentProperty.user.firstName || "none"}{" "}
+                          {currentProperty.user.lastName || "none2"}
+                        </span>
+                      </div>
+                      <div>
+                        Contact:{" "}
+                        <span className="font-bold">
+                          {currentProperty.user.email || "aa4241376@gmail.com"}
+                        </span>
+                      </div>
+                    </>
+                  )}
+                  {!currentProperty?.user && (
+                    <>
+                      <div className="">
+                        <span>Posted by:</span>{" "}
+                        <div className="font-bold inline-block">
+                          <span>Ali</span>
+                          <span>Arif</span>
+                        </div>
+                      </div>
+                      <div>
+                        Contact:{" "}
+                        <span className="font-bold">
+                          <span className="font-bold">aa4241376@gmail.com</span>
+                        </span>
+                      </div>
                     </>
                   )}
                 </div>
-              </span>
+              </div>
             </div>
           </div>
         </div>
         {/* description */}
-        <div className="px-5">
+        <div>
           <h3 className="text-2xl font-bold my-2">Description</h3>
           <p className="text-base">{currentProperty.description}</p>
         </div>
@@ -327,7 +393,7 @@ export const PropertyPageList = () => {
           <div className="p-4 rounded-lg shadow-sm">
             <h3 className="text-2xl font-semibold mb-4">Global Positioning</h3>
             <div className="grid grid-cols-2 gap-4">
-              <div className="flex items-center gap-4 p-1 bg-white rounded-md">
+              <div className="p-1 bg-white rounded-md flex items-center justify-center gap-4">
                 Latitude
                 <span className="text-xs md:text-sm text-gray-700 font-bold">
                   {currentProperty.latitude}{" "}
@@ -382,35 +448,41 @@ export const PropertyPageList = () => {
               </div>
             </div>
           </div>
-          {/* location */}
-
-          {/* <div className="bg-[#fdf4eb] p-6 rounded-lg shadow-md">
-            <h2 className="text-lg font-semibold text-black mb-4">Location</h2> */}
-
-          {/* <MapContainer
-              center={position}
-              zoom={10}
-              scrollWheelZoom={false}
-              className="h-60 w-full rounded-lg z-0"
+          {/*  */}
+          <div className="flex justify-between items-center px-5">
+            <button className="bg-amber-600 hover:bg-amber-700 text-white font-medium px-6 py-3 rounded-lg  border-none outline-none shadow-md transition-all hover:shadow-lg">
+              Contact us
+            </button>
+            <button
+              className={`
+        px-12 py-3 rounded-lg font-medium shadow-md transition-all
+        flex items-center justify-center gap-2
+        ${
+          isOwner
+            ? "bg-black hover:bg-[#323031] text-white hover:shadow-lg"
+            : "bg-gray-300 text-gray-500 cursor-not-allowed"
+        }
+        ${Isloading ? "opacity-75" : ""}
+      `}
+              disabled={!isOwner || Isloading}
+              onClick={handleSoldProperty}
+              aria-disabled={!isOwner || Isloading}
+              title={
+                isOwner
+                  ? "Mark property as sold"
+                  : "Only owner can mark as sold"
+              }
             >
-              <TileLayer
-                attribution='&copy; <a href="https://openstreetmap.org">OpenStreetMap</a> contributors'
-                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-              />
-              <Marker position={position} icon={markerIcon}>
-                <Popup>London</Popup>
-              </Marker>
-            </MapContainer> */}
-
-          {/* <div className="mt-4 flex gap-4 justify-between">
-              <button className="flex items-center gap-2 px-4 py-2 border border-gray-300 rounded-md hover:bg-gray-100">
-                <span>💬</span> Send a Message
-              </button>
-              <button className="flex items-center gap-2 px-4 py-2 border border-gray-300 rounded-md hover:bg-gray-100">
-                <span>📌</span> Save the Place
-              </button>
-            </div> */}
-          {/* </div> */}
+              {Isloading ? (
+                <>
+                  <span className="animate-spin inline-block w-4 h-4 border-2 border-white border-t-transparent rounded-full"></span>
+                  Pending...
+                </>
+              ) : (
+                "Sold"
+              )}
+            </button>
+          </div>
         </div>
       </div>
     </div>
