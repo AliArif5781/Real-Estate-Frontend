@@ -1,30 +1,36 @@
 import { RouterProvider } from "react-router-dom";
 import { router } from "./router";
-import { useAppDispatch, useAppSelector } from "./app/hook";
-import { useEffect } from "react";
+import { useAppDispatch } from "./app/hook";
+import { useEffect, useState } from "react";
 import { getUserData } from "./features/property/UserData";
+import { Loader } from "./components/Loader";
+import { Loading } from "./components/Loading";
 
 export const App = () => {
   const dispatch = useAppDispatch();
+  const [isLoading, setIsLoading] = useState(true);
 
-  const { initialized } = useAppSelector((state) => state.userData);
-  // console.log(data, "app.tsx");
   useEffect(() => {
-    const getData = async () => {
+    const initializeApp = async () => {
       try {
-        await dispatch(getUserData());
-        console.log("user data loaded");
-      } catch (error: any) {
-        return error?.response?.data || "Failed to Fetch data";
+        await dispatch(getUserData()).unwrap();
+      } catch (error) {
+        console.error("Failed to fetch user data:", error);
+      } finally {
+        setIsLoading(false);
       }
     };
-    getData();
+
+    initializeApp();
   }, [dispatch]);
 
-  // protected-Route
-  if (!initialized) {
-    return <div>Loading application...</div>;
+  if (isLoading) {
+    return (
+      <div>
+        <Loading />
+      </div>
+    );
   }
 
-  return <RouterProvider router={router}></RouterProvider>;
+  return <RouterProvider router={router} />;
 };
