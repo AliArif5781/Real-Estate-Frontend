@@ -1,13 +1,14 @@
 import { Input } from "../components/Input";
 import { Search } from "lucide-react";
 import bgImage from "/bg.png";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { searchProperties } from "../features/property/PropertySlice";
 import { useAppDispatch } from "../app/hook";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import { Button } from "../components/Button";
 import { Loader } from "../components/Loader";
+import { searchApiPost } from "../api/api";
 
 export const HeroSection = () => {
   const [city, setCity] = useState<string>("");
