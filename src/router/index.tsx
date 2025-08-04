@@ -12,7 +12,6 @@ import { PropertyPageList } from "../pages/PropertyPageList";
 import ProtectedRoute from "../pages/ProtectedRoute";
 import Dashboard from "../pages/AdminDashboard/Dashboard";
 import { ProtectedAdminRoute } from "../pages/ProtectedAdminRoute";
-import Test from "../pages/Test";
 
 export const router = createBrowserRouter([
   {
@@ -61,10 +60,6 @@ export const router = createBrowserRouter([
   {
     path: "*",
     element: <PageNotFound />,
-  },
-  {
-    path: "test",
-    element: <Test />,
   },
   {
     path: "dashboard",
