@@ -23,7 +23,7 @@ export const MainPage = () => {
     maxPrice: initialSearchParams.maxPrice || "",
     bedroom: "",
   });
-  // console.log(setSearchInputs, "seachinput");
+  console.log(setSearchInputs, "seachinput");
 
   useEffect(() => {
     if (
