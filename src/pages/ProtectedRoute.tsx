@@ -10,10 +10,9 @@ const ProtectedRoute = ({ children }: Protected) => {
     (state) => state.userData
   );
   const location = useLocation();
-  console.log(data, "protectedRoute");
 
   if (loading || !initialized) {
-    return <div>Loading...!!!!!!!</div>; // Or your custom loader
+    return <div>Loading...!!!!!</div>; // Or your custom loader
   }
 
   if (!data?.userId) {
