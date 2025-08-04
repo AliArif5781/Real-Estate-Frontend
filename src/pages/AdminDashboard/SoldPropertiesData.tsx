@@ -6,11 +6,12 @@ import { sendPropertyResponse } from "../../features/property/soldPropertyRespon
 import toast from "react-hot-toast";
 import { useState } from "react";
 
-interface soldPropertyProps {
+interface SoldPropertyProps {
   property: Property;
+  onRemove?: (id: string) => void; // Optional callback for parent component
 }
 
-const SoldPropertiesData = ({ property }: soldPropertyProps) => {
+const SoldPropertiesData = ({ property, onRemove }: SoldPropertyProps) => {
   const [isLoading, setIsLoading] = useState(false);
   const dispatch = useAppDispatch();
 
@@ -23,10 +24,17 @@ const SoldPropertiesData = ({ property }: soldPropertyProps) => {
           response,
         })
       ).unwrap();
-      console.log("Dispatching for property ID:", property._id);
+
       toast.success(
-        `Property ${response === "accept" ? "accepted" : "declined"}!`
+        response === "accept"
+          ? "Property accepted successfully"
+          : "Property declined"
       );
+
+      // Optional: Notify parent component to remove this item
+      if (response === "accept" && onRemove) {
+        onRemove(property._id);
+      }
     } catch (error) {
       toast.error(
         typeof error === "string" ? error : "Failed to update response"
@@ -35,6 +43,7 @@ const SoldPropertiesData = ({ property }: soldPropertyProps) => {
       setIsLoading(false);
     }
   };
+
   return (
     <div className="contents">
       <div className="col-span-3 p-3 border-b border-gray-200">
@@ -65,9 +74,9 @@ const SoldPropertiesData = ({ property }: soldPropertyProps) => {
       <div className="col-span-2 p-3 border-b border-gray-200 flex items-center text-[15px] text-gray-700">
         {property.city}, Pakistan
       </div>
-      <div className="col-span-1 p-3 border-b border-gray-200 flex items-center  ">
+      <div className="col-span-1 p-3 border-b border-gray-200 flex items-center">
         <span
-          className={`bg-blue-100 text-blue-800 p-1 rounded-lg text-xs font-medium `}
+          className={`bg-blue-100 text-blue-800 p-1 rounded-lg text-xs font-medium`}
         >
           {property.status}
         </span>
@@ -82,7 +91,7 @@ const SoldPropertiesData = ({ property }: soldPropertyProps) => {
           : "N/A"}
       </div>
       <div className="col-span-2 p-3 border-b border-gray-200 flex items-center text-sm">
-        <span className="bg-amber-200 text-amber-900 p-1 font-medium  rounded-lg">
+        <span className="bg-amber-200 text-amber-900 p-1 font-medium rounded-lg">
           {property.price.toLocaleString("en-PK", {
             style: "currency",
             currency: "PKR",
@@ -98,8 +107,11 @@ const SoldPropertiesData = ({ property }: soldPropertyProps) => {
         >
           {isLoading ? "Processing..." : "Decline"}
         </Button>
-        <Button variant="lightgreen" onClick={() => handleResponse("accept")}>
-          {/* bg-green-200 text-green-800 hover:bg-green-300 */}
+        <Button
+          variant="lightgreen"
+          onClick={() => handleResponse("accept")}
+          disabled={isLoading}
+        >
           {isLoading ? "Processing..." : "Accept"}
         </Button>
       </div>
