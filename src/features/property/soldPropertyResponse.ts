@@ -2,13 +2,13 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { searchApiPost } from "../../api/api";
 import type { Property } from "../../components/PropertyCard";
 
-interface soldProperty {
+interface SoldPropertyState {
   soldProperties: Property[];
   loading: boolean;
   error: string | null;
 }
 
-const initialState: soldProperty = {
+const initialState: SoldPropertyState = {
   soldProperties: [],
   loading: false,
   error: null,
@@ -20,10 +20,7 @@ export const sendPropertyResponse = createAsyncThunk(
     {
       propertyId,
       response,
-    }: {
-      propertyId: string;
-      response: "accept" | "decline";
-    },
+    }: { propertyId: string; response: "accept" | "decline" },
     { rejectWithValue }
   ) => {
     try {
@@ -31,7 +28,11 @@ export const sendPropertyResponse = createAsyncThunk(
         `/api/properties/${propertyId}/response`,
         { response }
       );
-      return data; // Return the full response data
+      return {
+        propertyId,
+        response,
+        updatedProperty: data.property,
+      };
     } catch (error: any) {
       return rejectWithValue(error.response?.data?.message || error.message);
     }
@@ -40,7 +41,7 @@ export const sendPropertyResponse = createAsyncThunk(
 
 const sendPropertyResponseSlice = createSlice({
   name: "sendPropertyResponse",
-  initialState: initialState,
+  initialState,
   reducers: {},
   extraReducers: (builder) => {
     builder
@@ -51,7 +52,7 @@ const sendPropertyResponseSlice = createSlice({
       .addCase(sendPropertyResponse.fulfilled, (state, action) => {
         state.loading = false;
         state.soldProperties = state.soldProperties.filter(
-          (property) => property._id !== action.payload._id
+          (property) => property._id !== action.payload.propertyId
         );
       })
       .addCase(sendPropertyResponse.rejected, (state, action) => {
