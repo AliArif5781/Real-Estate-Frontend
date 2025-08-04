@@ -3,7 +3,6 @@ import { router } from "./router";
 import { useAppDispatch } from "./app/hook";
 import { useEffect, useState } from "react";
 import { getUserData } from "./features/property/UserData";
-import { Loader } from "./components/Loader";
 import { Loading } from "./components/Loading";
 
 export const App = () => {
