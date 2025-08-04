@@ -65,10 +65,13 @@ const Dashboard = () => {
   const dispatch = useAppDispatch();
   const { data: userData } = useAppSelector((state) => state.userData);
   const { propertiesData, error } = useAppSelector((state) => state.getAllPost);
-  const { soldProperties, error: soldError } = useAppSelector(
-    (state) => state.soldProperty
-  );
-
+  const {
+    data: { properties, count },
+    loading,
+    error: soldError,
+  } = useAppSelector((state) => state.soldProperty);
+  console.log("Properties:", properties);
+  console.log("Count:", count);
   useEffect(() => {
     if (!userData || userData.role !== "admin") {
       navigate("/");
@@ -136,6 +139,11 @@ const Dashboard = () => {
     } catch (error: any) {
       toast.error("Logout failed:", error);
     }
+  };
+
+  const handleRemoveProperty = (id: string) => {
+    // Optional: Additional handling if needed
+    console.log("Property removed:", id);
   };
 
   return (
@@ -387,12 +395,15 @@ const Dashboard = () => {
                   Actions
                 </div>
 
-                {soldProperties.map((soldProperty) => (
+                {properties.map((soldProperty) => (
                   <Suspense
                     key={soldProperty._id}
                     fallback={<GetAllPropertyDataSekeleton />}
                   >
-                    <SoldPropertiesData property={soldProperty} />
+                    <SoldPropertiesData
+                      property={soldProperty}
+                      onRemove={handleRemoveProperty}
+                    />
                   </Suspense>
                 ))}
               </div>
