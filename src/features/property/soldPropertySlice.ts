@@ -3,13 +3,20 @@ import { searchApiPost } from "../../api/api";
 import type { Property } from "../../components/PropertyCard";
 
 interface soldProperty {
-  soldProperties: Property[];
+  // soldProperties: Property[];
+  data: {
+    properties: Property[];
+    count: number;
+  };
   loading: boolean;
   error: string | null;
 }
 
 const initialState: soldProperty = {
-  soldProperties: [],
+  data: {
+    properties: [],
+    count: 0,
+  },
   loading: false,
   error: null,
 };
@@ -21,8 +28,11 @@ export const soldPropertiesData = createAsyncThunk(
       const response = await searchApiPost.get(
         "/api/properties/getAllSoldProperties"
       );
-      // console.log(response, "soldPropertiesData");
-      return response.data.properties;
+      console.log("API Response:", response.data);
+      return {
+        properties: response.data.properties,
+        count: response.data.count,
+      };
     } catch (error: any) {
       return rejectWithValue(error.response?.data?.message || error.message);
     }
@@ -41,7 +51,10 @@ const soldPropertyDataSlice = createSlice({
       })
       .addCase(soldPropertiesData.fulfilled, (state, action) => {
         state.loading = false;
-        state.soldProperties = action.payload;
+        state.data = {
+          properties: action.payload.properties,
+          count: action.payload.count,
+        };
       })
       .addCase(soldPropertiesData.rejected, (state, action) => {
         state.loading = false;
