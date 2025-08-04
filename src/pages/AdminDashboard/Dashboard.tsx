@@ -8,25 +8,8 @@ import {
   Home,
   Users,
   Building2,
-  TrendingUp,
-  Eye,
-  UserPlus,
-  DollarSign,
-  Activity,
-  BarChart3,
-  Bell,
-  LucideDelete,
-  DeleteIcon,
-  Delete,
-  Trash2,
-  Bed,
-  BedDouble,
-  User,
-  Building2Icon,
-  HomeIcon,
   ScrollText,
-} from "lucide-react"; // Added more icons
-import img from "/userLogo.png";
+} from "lucide-react";
 import AdminInfoSkeleton from "./AdminInfoSkeleton";
 import { searchApiPost } from "../../api/api";
 import { logoutUser } from "../../features/property/LogoutUser/logoutUser";
@@ -67,7 +50,6 @@ const Dashboard = () => {
   const { propertiesData, error } = useAppSelector((state) => state.getAllPost);
   const {
     data: { properties, count },
-    loading,
     error: soldError,
   } = useAppSelector((state) => state.soldProperty);
   console.log("Properties:", properties);
