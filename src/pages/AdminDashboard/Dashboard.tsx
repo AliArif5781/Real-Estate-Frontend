@@ -9,6 +9,7 @@ import {
   Users,
   Building2,
   ScrollText,
+  Tag,
 } from "lucide-react";
 import AdminInfoSkeleton from "./AdminInfoSkeleton";
 import { searchApiPost } from "../../api/api";
@@ -26,7 +27,8 @@ const GetAllPropertyData = lazy(() => import("./GetAllPropertyData"));
 import { GetAllPropertyDataSekeleton } from "./GetAllPropertyDataSekeleton";
 import { UserDataSkeleton } from "./UserDataSkeleton";
 import { soldPropertiesData } from "../../features/property/soldPropertySlice";
-// import type { userState } from "../../features/property/UserData";
+import { getAllUserDetail } from "../../features/user/allUserDataSlice";
+const SoldLengthData = lazy(() => import("./SoldLengthData"));
 
 export interface userData {
   createdAt?: string;
@@ -52,8 +54,10 @@ const Dashboard = () => {
     data: { properties, count },
     error: soldError,
   } = useAppSelector((state) => state.soldProperty);
-  console.log("Properties:", properties);
-  console.log("Count:", count);
+  const { count: UserDataCount, users } = useAppSelector(
+    (state) => state.getAllUserDetails
+  );
+
   useEffect(() => {
     if (!userData || userData.role !== "admin") {
       navigate("/");
@@ -82,22 +86,7 @@ const Dashboard = () => {
   }, []);
 
   useEffect(() => {
-    const userLengthData = async () => {
-      try {
-        const response = await searchApiPost.get<{
-          count: number;
-          getAllUser: userData[];
-        }>("/api/user/getAllUserDetail");
-        // console.log(response.data.count, "user");
-        // console.log(response.data.getAllUser, "GetAllUser");
-
-        setGetAllUserData(response.data.getAllUser);
-        setIsUserLength(response.data.count);
-      } catch (error) {
-        console.error("Error fetching property length:", error);
-      }
-    };
-    userLengthData();
+    dispatch(getAllUserDetail());
   }, []);
 
   useEffect(() => {
@@ -124,12 +113,11 @@ const Dashboard = () => {
   };
 
   const handleRemoveProperty = (id: string) => {
-    // Optional: Additional handling if needed
     console.log("Property removed:", id);
   };
 
   return (
-    <div className="h-dvh grid grid-cols-[auto_1fr]">
+    <div className="min-h-screen grid grid-cols-[auto_1fr]">
       {/* Sidebar */}
       <div
         className={`bg-gray-50 rounded-r-md ${
@@ -201,10 +189,7 @@ const Dashboard = () => {
           </div>
 
           {/*  */}
-          {/* Add more menu items similarly */}
           <div className="mt-auto mb-4">
-            {" "}
-            {/* Pushes logout to the bottom */}
             <button
               onClick={handleLogout}
               className={`flex items-center p-2 rounded-lg hover:bg-gray-200 ${
@@ -269,7 +254,21 @@ const Dashboard = () => {
             <div className="pt-3">
               <div className="text-2xl font-bold">
                 <Suspense fallback={<CountSkeleton />}>
-                  <UserLengthData data={userLength} />
+                  <UserLengthData data={UserDataCount} />
+                </Suspense>
+              </div>
+            </div>
+          </div>
+          <div className="bg-[#FFFFFF] rounded-lg shadow-md px-5 p-3 h-[8rem]">
+            <div className="flex justify-between items-center">
+              <h3 className="text-md text-[#4B5563]">Total Sold Status</h3>
+              <Tag className="h-4 text-green-700 " />
+            </div>
+
+            <div className="pt-3">
+              <div className="text-2xl font-bold">
+                <Suspense fallback={<CountSkeleton />}>
+                  <SoldLengthData data={count} />
                 </Suspense>
               </div>
             </div>
@@ -316,7 +315,7 @@ const Dashboard = () => {
 
         {activeTab === "user" && (
           <div className="bg-white p-6 rounded-lg shadow-sm max-w-[1500px] overflow-auto h-[40rem] ">
-            <h2 className="text-2xl font-semibold mb-6">Active Properties</h2>
+            <h2 className="text-2xl font-semibold mb-6">Login User Data</h2>
 
             <div className="overflow-auto">
               <div className="grid grid-cols-12 min-w-[800px]">
@@ -339,7 +338,7 @@ const Dashboard = () => {
                   Actions
                 </div>
 
-                {getAllUserData.map((data) => (
+                {users.map((data) => (
                   <Suspense key={data._id} fallback={<UserDataSkeleton />}>
                     <GetAllUsersData user={data} />
                   </Suspense>
