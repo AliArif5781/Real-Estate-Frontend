@@ -10,11 +10,44 @@
 
 import { Trash2 } from "lucide-react";
 import type { userData } from "./Dashboard";
+import { useEffect, useState } from "react";
+import { searchApiPost } from "../../api/api";
+import toast from "react-hot-toast";
+import { useAppDispatch } from "../../app/hook";
+import { deleteUser } from "../../features/user/deleteUserSlice";
 
 interface userDataProps {
   user: userData;
 }
 const GetAllUsersData = ({ user }: userDataProps) => {
+  const [isDeleting, setIsDeleting] = useState(false);
+  const dispatch = useAppDispatch();
+
+  const handleDelete = async () => {
+    // setIsDeleting(true);
+    // try {
+    //   const response = await searchApiPost.delete(`/api/user/${user._id}`);
+    //   // if (response.status === 200) {
+    //   toast.success("User Deleted Successfully");
+    //   console.log(response.data);
+    //   return response.data;
+    //   // }
+    // } catch (error) {
+    //   throw new Error("Failed to delete user");
+    // } finally {
+    //   setIsDeleting(false);
+    // }
+    if (!user._id) return;
+
+    const confirmDelete = window.confirm(
+      `Are you sure you want to delete ${user.firstName} ${user.lastName}?`
+    );
+
+    if (confirmDelete) {
+      dispatch(deleteUser(user._id));
+    }
+  };
+
   return (
     <div className="contents">
       <div className="col-span-2 p-3 border-b border-gray-200 flex items-center truncate">
@@ -46,9 +79,23 @@ const GetAllUsersData = ({ user }: userDataProps) => {
             })
           : "N/A"}
       </div>
-      <div className="col-span-1 p-3 border-b border-gray-200 flex pl-8 items-center gap-3">
-        <Trash2 className="text-red-600 hover:text-red-800 cursor-pointer" />
-      </div>
+      <button
+        disabled={isDeleting}
+        className="col-span-1 p-3 border-b border-gray-200 flex pl-8 items-center gap-3"
+      >
+        <Trash2
+          className={`text-red-600 hover:text-red-800 cursor-pointer ${
+            isDeleting ? "opacity-50" : ""
+          }`}
+          onClick={handleDelete}
+          aria-label="Delete user"
+        />
+        {isDeleting && (
+          <span className="text-sm text-gray-500">
+            <Trash2 />
+          </span>
+        )}
+      </button>
     </div>
   );
 };
