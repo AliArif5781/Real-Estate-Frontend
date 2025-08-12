@@ -10,9 +10,9 @@
 
 import { Trash2 } from "lucide-react";
 import type { userData } from "./Dashboard";
-import { useEffect, useState } from "react";
-import { searchApiPost } from "../../api/api";
-import toast from "react-hot-toast";
+import { useState } from "react";
+// import { searchApiPost } from "../../api/api";
+// import toast from "react-hot-toast";
 import { useAppDispatch } from "../../app/hook";
 import { deleteUser } from "../../features/user/deleteUserSlice";
 
@@ -22,7 +22,7 @@ interface userDataProps {
 const GetAllUsersData = ({ user }: userDataProps) => {
   const [isDeleting, setIsDeleting] = useState(false);
   const dispatch = useAppDispatch();
-
+  console.log(setIsDeleting);
   const handleDelete = async () => {
     if (!user._id) return;
 
