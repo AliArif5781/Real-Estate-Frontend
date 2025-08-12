@@ -28,7 +28,7 @@ export const soldPropertiesData = createAsyncThunk(
       const response = await searchApiPost.get(
         "/api/properties/getAllSoldProperties"
       );
-      console.log("API Response:", response.data);
+      // console.log("API Response:", response.data);
       return {
         properties: response.data.properties,
         count: response.data.count,
