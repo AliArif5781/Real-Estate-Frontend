@@ -22,6 +22,8 @@ import userLogo from "/userLogo.png";
 import { PropertyPageListSkeleton } from "../components/skeleton/PropertyPageListSelection";
 import { searchApiPost } from "../api/api";
 import toast from "react-hot-toast";
+import PropertyNotFound from "./PropertyNotFound";
+import { a } from "motion/react-client";
 
 // interface Property {
 //   images: string[];
@@ -39,6 +41,10 @@ export const PropertyPageList = () => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [isOwner, setIsOwner] = useState<boolean>(false);
   const [Isloading, setIsLoading] = useState<boolean>(false);
+  const [contact, setContact] = useState<boolean>(false);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [message, setMessage] = useState("");
+
   const { currentProperty, loading, error } = useAppSelector(
     (state) => state.clickProperties
   );
@@ -67,8 +73,6 @@ export const PropertyPageList = () => {
     );
   };
 
-  // const userData = useAppSelector((state) => state.userData);
-  // console.log(userData);
   useEffect(() => {
     if (id) {
       dispatch(fetchPropertyDetails(id));
@@ -97,7 +101,6 @@ export const PropertyPageList = () => {
       console.log(response, "response PRoperty");
       if (response.data?.success) {
         toast.success(response.data.message);
-        // Update local state if needed
         return response.data;
       }
       throw new Error(response.data?.message || "Operation failed");
@@ -113,12 +116,33 @@ export const PropertyPageList = () => {
     }
   };
 
+  const handleContact = async () => {
+    if (userData?.email !== currentProperty?.user.email) {
+      setContact(contact);
+      setIsDialogOpen(true);
+      console.log("Contact action can proceed");
+    } else {
+      console.log("Contact not allowed");
+    }
+    console.log(userData?.email);
+  };
+
+  const handleSubmit = (e: any) => {
+    e.preventDefault();
+    console.log("Message submitted:", message);
+    // Add your submission logic here
+    setIsDialogOpen(false);
+    setMessage("");
+  };
+
   if (loading) return <PropertyPageListSkeleton />;
-  if (error) return <div>Error: {error}</div>;
+  if (error) return <PropertyNotFound />;
   if (!currentProperty) return <div>Property not found</div>;
 
   return (
-    <div className="min-h-screen grid grid-cols-1 lg:grid-cols-12 max-w-[1500px] mx-auto">
+    <div
+      className={`min-h-screen grid grid-cols-1 lg:grid-cols-12 max-w-[1500px] mx-auto `}
+    >
       {/* Left Column - Image Gallery */}
       <div className="lg:col-span-8 p-4 md:p-6 flex flex-col gap-4">
         <div className="grid grid-cols-1 md:grid-cols-12 gap-3 md:gap-4">
@@ -206,10 +230,10 @@ export const PropertyPageList = () => {
             </span>
             <div className="flex gap-2 mt-2">
               <span className="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-medium">
-                Rent
+                {currentProperty.type}
               </span>
               <span className="bg-amber-100 text-amber-800 px-3 py-1 rounded-full text-sm font-medium">
-                Apartment
+                {currentProperty?.property}
               </span>
             </div>
           </div>
@@ -448,11 +472,25 @@ export const PropertyPageList = () => {
               </div>
             </div>
           </div>
-          {/*  */}
+
           <div className="flex justify-between items-center px-5">
-            <button className="bg-amber-600 hover:bg-amber-700 text-white font-medium px-6 py-3 rounded-lg  border-none outline-none shadow-md transition-all hover:shadow-lg">
+            <button
+              className={`font-medium px-6 py-3 rounded-lg border-none outline-none shadow-md transition-all ${
+                userData?.email === currentProperty.user.email
+                  ? "bg-gray-300 text-gray-500 cursor-not-allowed"
+                  : "bg-amber-600 hover:bg-amber-700 text-white hover:shadow-lg"
+              }`}
+              onClick={(e) => {
+                if (userData?.email !== currentProperty.user.email) {
+                  e.preventDefault();
+                  window.open("https://mail.google.com", "_blank");
+                }
+              }}
+              disabled={userData?.email === currentProperty.user.email}
+            >
               Contact us
             </button>
+
             <button
               className={`
         px-12 py-3 rounded-lg font-medium shadow-md transition-all
