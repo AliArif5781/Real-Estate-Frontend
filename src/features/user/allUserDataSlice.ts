@@ -22,7 +22,7 @@ export const getAllUserDetail = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       const response = await searchApiPost.get("/api/user/getAllUserDetail");
-      console.log(response.data, "response === users ===== count");
+      // console.log(response.data, "response === users ===== count");
       return {
         users: response.data.getAllUser,
         count: response.data.count,
