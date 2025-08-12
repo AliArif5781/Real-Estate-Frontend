@@ -24,19 +24,6 @@ const GetAllUsersData = ({ user }: userDataProps) => {
   const dispatch = useAppDispatch();
 
   const handleDelete = async () => {
-    // setIsDeleting(true);
-    // try {
-    //   const response = await searchApiPost.delete(`/api/user/${user._id}`);
-    //   // if (response.status === 200) {
-    //   toast.success("User Deleted Successfully");
-    //   console.log(response.data);
-    //   return response.data;
-    //   // }
-    // } catch (error) {
-    //   throw new Error("Failed to delete user");
-    // } finally {
-    //   setIsDeleting(false);
-    // }
     if (!user._id) return;
 
     const confirmDelete = window.confirm(
