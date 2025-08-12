@@ -43,8 +43,8 @@ export interface userData {
 const Dashboard = () => {
   const [isCollapsed, setIsCollapsed] = useState<boolean>(false);
   const [propertyLength, setIsPropertyLength] = useState<number>(0);
-  const [userLength, setIsUserLength] = useState<number>(0);
-  const [getAllUserData, setGetAllUserData] = useState<userData[]>([]);
+  // const [userLength, setIsUserLength] = useState<number>(0);
+  // const [getAllUserData, setGetAllUserData] = useState<userData[]>([]);
   const [activeTab, setActiveTab] = useState<string>("dashboard");
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
