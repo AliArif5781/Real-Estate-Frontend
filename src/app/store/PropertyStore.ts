@@ -9,6 +9,7 @@ import soldPropertyDataReducer from "../../features/property/soldPropertySlice";
 import sendPropertyResponseReducer from "../../features/property/soldPropertyResponse";
 import deleteUserReducer from "../../features/user/deleteUserSlice";
 import allUserReducer from "../../features/user/allUserDataSlice";
+import deletePropertyReducer from "../../features/property/deletePropertySlice";
 export const store = configureStore({
   reducer: {
     property: propertyReducer,
@@ -21,6 +22,7 @@ export const store = configureStore({
     sendPropertyResponse: sendPropertyResponseReducer,
     deleteUser: deleteUserReducer,
     getAllUserDetails: allUserReducer,
+    deleteProperty: deletePropertyReducer,
     // admin: adminReducer,
     // protected: protectedReducer,
   },
