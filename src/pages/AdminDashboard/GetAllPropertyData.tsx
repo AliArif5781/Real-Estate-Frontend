@@ -1,10 +1,23 @@
 import { Dot, Trash2 } from "lucide-react";
 import type { Property } from "../../features/property/PropertySlice";
+import { useAppDispatch } from "../../app/hook";
+import { deletePropertyData } from "../../features/property/deletePropertySlice";
 
 interface GetAllPropertyDataProps {
   property: Property;
 }
 const GetAllPropertyData = ({ property }: GetAllPropertyDataProps) => {
+  const dispatch = useAppDispatch();
+  const handleDeleteProperty = async () => {
+    if (!property._id) return;
+
+    const confirmDelete = window.confirm(
+      `Are you sure you want to delete ${property.title} ${property.city}?`
+    );
+    if (confirmDelete) {
+      dispatch(deletePropertyData(property._id));
+    }
+  };
   return (
     <div className="contents">
       <div className="col-span-4 p-3 border-b border-gray-200">
@@ -63,7 +76,10 @@ const GetAllPropertyData = ({ property }: GetAllPropertyDataProps) => {
         </span>
       </div>
       <div className="col-span-1 p-3 border-b border-gray-200 flex pl-8 items-center gap-3">
-        <Trash2 className="text-red-600 hover:text-red-800 cursor-pointer" />
+        <Trash2
+          className="text-red-600 hover:text-red-800 cursor-pointer"
+          onClick={handleDeleteProperty}
+        />
       </div>
     </div>
   );
