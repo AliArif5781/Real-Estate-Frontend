@@ -23,7 +23,6 @@ import { PropertyPageListSkeleton } from "../components/skeleton/PropertyPageLis
 import { searchApiPost } from "../api/api";
 import toast from "react-hot-toast";
 import PropertyNotFound from "./PropertyNotFound";
-import { a } from "motion/react-client";
 
 // interface Property {
 //   images: string[];
@@ -41,9 +40,9 @@ export const PropertyPageList = () => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [isOwner, setIsOwner] = useState<boolean>(false);
   const [Isloading, setIsLoading] = useState<boolean>(false);
-  const [contact, setContact] = useState<boolean>(false);
-  const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const [message, setMessage] = useState("");
+  // const [contact, setContact] = useState<boolean>(false);
+  // const [isDialogOpen, setIsDialogOpen] = useState(false);
+  // const [message, setMessage] = useState("");
 
   const { currentProperty, loading, error } = useAppSelector(
     (state) => state.clickProperties
@@ -116,24 +115,24 @@ export const PropertyPageList = () => {
     }
   };
 
-  const handleContact = async () => {
-    if (userData?.email !== currentProperty?.user.email) {
-      setContact(contact);
-      setIsDialogOpen(true);
-      console.log("Contact action can proceed");
-    } else {
-      console.log("Contact not allowed");
-    }
-    console.log(userData?.email);
-  };
+  // const handleContact = async () => {
+  //   if (userData?.email !== currentProperty?.user.email) {
+  //     setContact(contact);
+  //     setIsDialogOpen(true);
+  //     console.log("Contact action can proceed");
+  //   } else {
+  //     console.log("Contact not allowed");
+  //   }
+  //   console.log(userData?.email);
+  // };
 
-  const handleSubmit = (e: any) => {
-    e.preventDefault();
-    console.log("Message submitted:", message);
-    // Add your submission logic here
-    setIsDialogOpen(false);
-    setMessage("");
-  };
+  // const handleSubmit = (e: any) => {
+  //   e.preventDefault();
+  //   console.log("Message submitted:", message);
+  //   // Add your submission logic here
+  //   setIsDialogOpen(false);
+  //   setMessage("");
+  // };
 
   if (loading) return <PropertyPageListSkeleton />;
   if (error) return <PropertyNotFound />;
