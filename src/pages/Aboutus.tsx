@@ -1,21 +1,7 @@
-import { useEffect } from "react";
 import bgImage from "/bg.png";
-import { searchApiPost } from "../api/api";
+import video from "/video.mp4";
+
 export const Aboutus = () => {
-  useEffect(() => {
-    const getfunc = async () => {
-      try {
-        const response = await searchApiPost.get(
-          "/api/properties/getAllSoldProperties"
-        );
-        console.log(response.data, "data get all sold data");
-        response.data;
-      } catch (error) {
-        console.log(error, "getfunc");
-      }
-    };
-    getfunc();
-  }, []);
   return (
     <div className="min-h-screen grid grid-cols-1 lg:grid-cols-12 mx-auto max-w-[1200px] px-4 sm:px-6 lg:px-8">
       {/* Text Content */}
@@ -28,12 +14,12 @@ export const Aboutus = () => {
             <span className="block pt-2"> Building</span>
           </h2>
           <p className="text-lg text-gray-500 leading-relaxed pr-[4rem] ">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptas
-            sit ad est, obcaecati voluptatem porro iure laudantium sed deleniti
-            debitis culpa? Qui molestias modi esse sequi labore, optio error
-            quaerat, ut laudantium dolor architecto sint vel obcaecati ipsum
-            quae itaque eum deleniti ad iusto facere in culpa exercitationem
-            odio. Impedit
+            Housing society management is a digital platform that simplifies
+            community living. We automate maintenance, security, and
+            communication for seamless operations. Our system enhances
+            transparency, efficiency, and resident engagement . Designed for
+            scalability and security, we empower societies to transition into
+            smart, well-managed communities. Better management. Happier homes.
           </p>
         </div>
       </div>
@@ -41,7 +27,16 @@ export const Aboutus = () => {
       <div className="lg:col-span-5 order-1 lg:order-2 hidden lg:flex items-center justify-center">
         <div className="w-full h-64 sm:h-80 md:h-[30rem] object-cover  rounded-xl overflow-hidden flex items-center justify-center">
           {/* {videoElement} */}
-          <img src={bgImage} alt="" />
+          <video
+            controls
+            preload="metadata"
+            // playsInline
+            muted
+            poster={bgImage}
+            className="rounded-lg"
+          >
+            <source src={video} type="video/mp4" />
+          </video>
         </div>
       </div>
     </div>
