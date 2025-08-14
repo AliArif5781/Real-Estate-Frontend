@@ -37,7 +37,7 @@ export const loginUserData = createAsyncThunk(
         throw new Error(response.data.message || "Login Failed");
       }
 
-      // console.log(response.data.userData, "login response");
+      console.log(response.data, "login response");
       return response.data.userData;
     } catch (error: any) {
       return rejectWithValue(error.response.data.message || "Login Failed");
