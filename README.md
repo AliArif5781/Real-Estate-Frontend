@@ -85,12 +85,12 @@ A comprehensive housing society management system that allows users to browse pr
 ## 🛠️ Technologies Used
 
 ### Frontend
-
 - ![React](https://img.shields.io/badge/-React-61DAFB?logo=react&logoColor=white)
 - ![TypeScript](https://img.shields.io/badge/-TypeScript-3178C6?logo=typescript&logoColor=white)
 - ![Tailwind CSS](https://img.shields.io/badge/-Tailwind_CSS-38B2AC?logo=tailwind-css&logoColor=white)
 - ![SASS](https://img.shields.io/badge/-SASS-CC6699?logo=sass&logoColor=white)
 - ![Framer Motion](https://img.shields.io/badge/-Framer_Motion-0055FF?logo=framer&logoColor=white)
+- ![Redux Toolkit](https://img.shields.io/badge/-Redux_Toolkit-764ABC?logo=redux&logoColor=white)
 
 ### Backend
 
