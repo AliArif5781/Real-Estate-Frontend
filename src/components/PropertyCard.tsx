@@ -140,9 +140,9 @@ export const PropertyCard: React.FC<PropertyCardProps> = ({ propertyData }) => {
             </span>
           </div>
 
-          <button className="text-gray-500 transition-colors" disabled={isSold}>
+          {/* <button className="text-gray-500 transition-colors" disabled={isSold}>
             <Bookmark className="h-5 w-5" />
-          </button>
+          </button> */}
         </div>
       </div>
     </div>
