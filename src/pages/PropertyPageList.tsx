@@ -4,11 +4,14 @@ import {
   Bus,
   ChevronLeft,
   ChevronRight,
+  Dumbbell,
   GlassWater,
+  Hospital,
   MapPin,
   PawPrint,
   School,
   Square,
+  TreePalm,
   Utensils,
   UtilityPole,
   WalletCards,
@@ -351,8 +354,8 @@ export const PropertyPageList = () => {
           {/* Sizes */}
           <div className="p-4 rounded-lg shadow-sm">
             <h3 className="text-2xl font-semibold mb-4">Sizes</h3>
-            <div className="grid grid-cols-3 gap-4">
-              <div className="flex items-center gap-4 p-1 bg-white rounded-md">
+            <div className="grid grid-cols-2 gap-4">
+              <div className="p-1 bg-white rounded-md flex items-center justify-center gap-4">
                 <Square className=" h-6 text-gray-600" /> {/* Increased size */}
                 <span className="text-xs text-gray-700">
                   {currentProperty.totalSize} sq ft
@@ -371,6 +374,13 @@ export const PropertyPageList = () => {
                 {/* Increased size */}
                 <span className="text-xs md:text-sm text-gray-700">
                   {currentProperty.bathroomNumber} bath
+                </span>
+              </div>
+              <div className="p-1 bg-white rounded-md flex items-center justify-center gap-4">
+                <Bath className="w-8 h-6 text-gray-600" />
+                {/* Increased size */}
+                <span className="text-xs md:text-sm text-gray-700">
+                  {currentProperty.Kitchen} Kitchen
                 </span>
               </div>
             </div>
@@ -415,30 +425,30 @@ export const PropertyPageList = () => {
           {/* Global Positioning */}
           <div className="p-4 rounded-lg shadow-sm">
             <h3 className="text-2xl font-semibold mb-4">Global Positioning</h3>
-            <div className="grid grid-cols-2 gap-4">
-              <div className="p-1 bg-white rounded-md flex items-center justify-center gap-4">
-                Latitude
-                <span className="text-xs md:text-sm text-gray-700 font-bold">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+              <div className="p-1 bg-white rounded-md flex items-center justify-center gap-3">
+                <span className="text-[12.5px]">Latitude</span>
+                <span className="text-xs text-gray-700 font-bold">
                   {currentProperty.latitude}{" "}
                 </span>
                 {/* Slightly larger text */}
               </div>
-              <div className="p-1 bg-white rounded-md flex items-center justify-center gap-4">
-                Longitude
-                <span className="text-xs md:text-sm text-gray-700 font-bold">
+              <div className="p-1 bg-white rounded-md flex items-center justify-center gap-3">
+                <span className="text-[12.5px]">Longitude</span>
+                <span className="text-xs text-gray-700 font-bold">
                   {currentProperty.longitude}
                 </span>
               </div>
             </div>
           </div>
           {/*Nearby Places */}
-          <div className=" p-3 rounded-lg">
+          <div className="p-3 rounded-lg">
             <h2 className="text-lg font-semibold text-black mb-4">
               Nearby Places
             </h2>
-            <div className="flex justify-between items-center p-3 bg-white rounded-lg shadow-sm">
+            <div className="flex flex-wrap justify-between items-center p-3 bg-white rounded-lg shadow-sm gap-3">
               {/* School */}
-              <div className="flex flex-wrap items-center space-x-2">
+              <div className="flex items-center space-x-2 min-w-[100px]">
                 <School className="text-yellow-600" size={24} />
                 <div>
                   <p className="text-sm font-semibold text-black">School</p>
@@ -449,7 +459,7 @@ export const PropertyPageList = () => {
               </div>
 
               {/* Bus Stop */}
-              <div className="flex flex-wrap items-center space-x-2">
+              <div className="flex items-center space-x-2 min-w-[100px]">
                 <Bus className="text-yellow-600" size={24} />
                 <div>
                   <p className="text-sm font-semibold text-black">Bus Stop</p>
@@ -460,12 +470,44 @@ export const PropertyPageList = () => {
               </div>
 
               {/* Restaurant */}
-              <div className="flex flex-wrap items-center space-x-2">
+              <div className="flex items-center space-x-2 min-w-[100px]">
                 <Utensils className="text-yellow-600" size={24} />
                 <div>
                   <p className="text-sm font-semibold text-black">Restaurant</p>
                   <p className="text-xs text-gray-600">
                     {currentProperty.Resturant}m
+                  </p>
+                </div>
+              </div>
+              {/* Garden */}
+              <div className="flex items-center space-x-2 min-w-[100px]">
+                <TreePalm className="text-yellow-600" size={24} />
+                <div>
+                  <p className="text-sm font-semibold text-black">Garden</p>
+                  <p className="text-xs text-gray-600">
+                    {currentProperty.Garden}m
+                  </p>
+                </div>
+              </div>
+
+              {/* Gym */}
+              <div className="flex items-center space-x-2 min-w-[100px]">
+                <Dumbbell className="text-yellow-600" size={24} />
+                <div>
+                  <p className="text-sm font-semibold text-black">Gym</p>
+                  <p className="text-xs text-gray-600">
+                    {currentProperty.Gym}m
+                  </p>
+                </div>
+              </div>
+
+              {/* Hospital */}
+              <div className="flex items-center space-x-2 min-w-[100px]">
+                <Hospital className="text-yellow-600" size={24} />
+                <div>
+                  <p className="text-sm font-semibold text-black">Hospital</p>
+                  <p className="text-xs text-gray-600">
+                    {currentProperty.Hospital}m
                   </p>
                 </div>
               </div>
