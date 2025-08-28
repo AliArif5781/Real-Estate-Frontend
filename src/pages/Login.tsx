@@ -17,8 +17,8 @@ export const Login = () => {
   // const from = location.state?.from?.pathname || "/";
   const [isLoading, setIsloading] = useState<boolean>(false);
   const [formData, setFormData] = useState({
-    email: "",
-    password: "",
+    email: "aa4241376@gmail.com",
+    password: "1234",
   });
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -62,6 +62,10 @@ export const Login = () => {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
+  const demoCredentials = {
+    email: "aa4241376@gmail.com",
+    password: "1234",
+  };
   return (
     <div className="min-h-dvh grid grid-cols-1 lg:grid-cols-12 font-sans">
       <div className="md:col-span-6 bg-[#F5F5F5]">
@@ -92,7 +96,7 @@ export const Login = () => {
                   type="email"
                   id="email"
                   name="email"
-                  value={formData.email}
+                  value="aa4241376@gmail.com"
                   onChange={handleChange}
                   className="w-full px-3 py-2 border rounded-md border-none outline-none"
                   required
@@ -106,7 +110,7 @@ export const Login = () => {
                   type="password"
                   id="password"
                   name="password"
-                  value={formData.password}
+                  value={1234}
                   onChange={handleChange}
                   className="w-full px-3 py-2 border rounded-md border-none outline-none"
                   required
