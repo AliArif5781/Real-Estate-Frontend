@@ -78,7 +78,7 @@ const GetAllPropertyData = ({ property }: GetAllPropertyDataProps) => {
       <div className="col-span-1 p-3 border-b border-gray-200 flex pl-8 items-center gap-3">
         <Trash2
           className="text-red-600 hover:text-red-800 cursor-pointer"
-          onClick={handleDeleteProperty}
+          // onClick={handleDeleteProperty}
         />
       </div>
     </div>
