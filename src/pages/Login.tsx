@@ -17,7 +17,7 @@ export const Login = () => {
   // const from = location.state?.from?.pathname || "/";
   const [isLoading, setIsloading] = useState<boolean>(false);
   const [formData, setFormData] = useState({
-    email: "aa4241376@gmail.com",
+    email: "aliairf92@gmail.com",
     password: "1234",
   });
 
@@ -96,7 +96,7 @@ export const Login = () => {
                   type="email"
                   id="email"
                   name="email"
-                  value="aa4241376@gmail.com"
+                  value="aliairf92@gmail.com"
                   onChange={handleChange}
                   className="w-full px-3 py-2 border rounded-md border-none outline-none"
                   required
